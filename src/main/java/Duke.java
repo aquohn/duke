@@ -1,5 +1,6 @@
 import java.lang.*;
 import java.util.Scanner;
+import Task;
 
 public class Duke {
 
@@ -15,23 +16,23 @@ public class Duke {
 
         say(intro);
 
-        String[] input = {""};
+        String[] sayArr = new String[1];
         Scanner scanIn = new Scanner(System.in);
         while (true) {
-          input[0] = scanIn.nextLine();
+          sayArr[0] = scanIn.nextLine();
           say(input);
         }
     }
 
     private static void say(String[] msg) {
-      String line = "____________________________________________________________";
+      String line = "    ____________________________________________________________";
       String indent = "    ";
-      System.out.println(indent + line);
+      System.out.println(line);
       int lineCount = msg.length;
       for (int i = 0; i < lineCount; ++i) {
         System.out.println(indent + msg[i]);
       }
-      System.out.println(indent + line);
+      System.out.println(line);
       System.out.println("");
     }
 }
