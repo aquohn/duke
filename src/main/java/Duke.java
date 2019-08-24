@@ -33,10 +33,12 @@ public class Duke {
               break;
           case CMD_BYE:
               say(byeArr);
+              System.exit(0);
               break;
           default:
               taskList.add(new Task(sayArr[0]));
               sayArr[0] = "added: " + sayArr[0]; //parametrise for translation?
+              say(sayArr);
           }
         }
     }
@@ -55,7 +57,7 @@ public class Duke {
     private static void listTasks(ArrayList<Task> taskList) {
         String[] sayArr = new String[taskList.size()];
         for (int i = 0; i < taskList.size(); ++i) {
-            sayArr[i] = Integer.toString(i + 1) + ". " + taskList.get(i);
+            sayArr[i] = Integer.toString(i + 1) + ". " + taskList.get(i).getName();
         }
         say(sayArr);
     }
