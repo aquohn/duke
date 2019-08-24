@@ -33,7 +33,7 @@ JC = javac
 #
 
 %.class: %.java
-	$(JC) $(JFLAGS) $^.java
+	$(JC) $(JFLAGS) $^
 
 
 #
@@ -42,7 +42,10 @@ JC = javac
 
 CLASSES = \
 	Duke.java \
-	Task.java
+	Task.java \
+	ToDo.java \
+	Event.java \
+	Deadline.java
 
 
 #

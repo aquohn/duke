@@ -3,6 +3,7 @@ import java.lang.*;
 public class Task {
 
     private String name;
+    private char type;
     private Boolean isDone;
 
     public Task(String _name) {
@@ -14,11 +15,7 @@ public class Task {
         isDone = true; 
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getStatusIcon() {
-        return (isDone ? "\u2713" : "\u2718"); //return tick or X symbols
+    public String toString() {
+        return "[" + (isDone ? "\u2713" : "\u2718") + "] " + name; //ternary operator returns tick or X
     }
 }

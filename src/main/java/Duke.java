@@ -77,7 +77,7 @@ public class Duke {
         String[] sayArr = new String[taskList.size()];
         for (int i = 0; i < taskList.size(); ++i) {
             Task currTask = taskList.get(i);
-            sayArr[i] = Integer.toString(i + 1) + ".[" + currTask.getStatusIcon() + "] " + currTask.getName();
+            sayArr[i] = Integer.toString(i + 1) + "." + currTask.toString();
         }
         say(sayArr);
     }
