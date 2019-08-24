@@ -18,7 +18,7 @@ public class Duke {
         System.out.println("Hello from\n" + logo);*/
         
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
-        String[] byeArr = {"Bye. Hope to see you again soon!"}
+        String[] byeArr = {"Bye. Hope to see you again soon!"};
 
         say(hiArr);
         
@@ -35,7 +35,9 @@ public class Duke {
               say(byeArr);
               break;
           default:
-              taskList.add(sayArr[0]);
+              taskList.add(new Task(sayArr[0]));
+              sayArr[0] = "added: " + sayArr[0]; //parametrise for translation?
+          }
         }
     }
 
@@ -53,7 +55,8 @@ public class Duke {
     private static void listTasks(ArrayList<Task> taskList) {
         String[] sayArr = new String[taskList.size()];
         for (int i = 0; i < taskList.size(); ++i) {
-            sayArr[i] = taskList.get(i);
+            sayArr[i] = Integer.toString(i + 1) + ". " + taskList.get(i);
         }
+        say(sayArr);
     }
 }
