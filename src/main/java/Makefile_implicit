@@ -7,22 +7,24 @@
 JFLAGS = -g
 JC = javac
 
-TASKS = ToDo.class Event.class Deadline.class
-
 #
 # define default compilation behaviour for class files
 #
 
-%.class: %.java
+.java.class:
 	$(JC) $(JFLAGS) $<
 
 #
 # default make target, will build dependencies on right of colon if needed
 #
 
-Duke.class: $(TASKS)
+Duke.class: ToDo.class Event.class Deadline.class
 
-$(TASKS): %.class: Task.class
+#
+# these are all tasks, so Task will have to be built first
+#
+
+ToDo.class Event.class Deadline.class: Task.class
 
 #
 # ignore files
