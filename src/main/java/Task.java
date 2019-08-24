@@ -13,4 +13,12 @@ public class Task {
     public void markDone() {
         isDone = false; 
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
 }
