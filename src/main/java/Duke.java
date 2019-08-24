@@ -20,6 +20,8 @@ public class Duke {
         
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};
+        String[] errArr = {"I can't do that!"};
+        String[] doneArr = {"Nice! I've marked this task as done:", ""};
 
         say(hiArr);
         
@@ -29,7 +31,7 @@ public class Duke {
         Scanner scanIn = new Scanner(System.in);
         while (true) {
           inputStr = scanIn.nextLine();
-          String[] argArr = inputStr.split();
+          String[] argArr = inputStr.split(" ");
           switch (argArr[0]) {
           case CMD_LIST:
               listTasks(taskList); //these names ordinarily make more sense than they appear to here
@@ -38,6 +40,20 @@ public class Duke {
               say(byeArr);
               System.exit(0);
               break;
+          case CMD_DONE:
+              if (argArr[1].matches("\\d+")) { //if second arg is an integer
+                 int idx = Integer.parseInt(argArr[1]) - 1;
+                 if (idx < taskList.size()) {
+                    Task currTask = taskList.get(idx);
+                    currTask.markDone();
+                    doneArr[1] = "  [" + currTask.getStatusIcon() + "] " + currTask.getName();
+                    say(doneArr);
+                    continue;
+                 }
+              }
+              say(errArr);
+              break;
+
           default:
               taskList.add(new Task(inputStr));
               sayArr[0] = "added: " + inputStr; //parametrise for translation?
@@ -60,7 +76,8 @@ public class Duke {
     private static void listTasks(ArrayList<Task> taskList) {
         String[] sayArr = new String[taskList.size()];
         for (int i = 0; i < taskList.size(); ++i) {
-            sayArr[i] = Integer.toString(i + 1) + ". " + taskList.get(i).getName();
+            Task currTask = taskList.get(i);
+            sayArr[i] = Integer.toString(i + 1) + ".[" + currTask.getStatusIcon() + "] " + currTask.getName();
         }
         say(sayArr);
     }
