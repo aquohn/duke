@@ -46,7 +46,7 @@ public class Duke {
                  if (idx < taskList.size()) {
                     Task currTask = taskList.get(idx);
                     currTask.markDone();
-                    doneArr[1] = "  [" + currTask.getStatusIcon() + "] " + currTask.getName();
+                    doneArr[1] = "  " + currTask.toString();
                     say(doneArr);
                     continue;
                  }

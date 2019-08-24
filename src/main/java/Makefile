@@ -32,8 +32,8 @@ JC = javac
 # Remember that there must be a < tab > before the command line ('rule') 
 #
 
-%.class: %.java
-	$(JC) $(JFLAGS) $^
+.java.class:
+	$(JC) $(JFLAGS) $*.java
 
 
 #

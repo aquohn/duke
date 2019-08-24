@@ -3,8 +3,8 @@ import java.lang.*;
 public class Task {
 
     private String name;
-    private char type;
     private Boolean isDone;
+    protected char type;
 
     public Task(String _name) {
         name = _name;

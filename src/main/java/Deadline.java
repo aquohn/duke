@@ -2,7 +2,7 @@ import java.lang.*;
 
 public class Deadline extends Task {
 
-    privbye String by;
+    private String by;
 
     public Deadline(String _name, String _by) {
         super(_name);
