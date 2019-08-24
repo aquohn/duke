@@ -11,12 +11,12 @@ public class Duke {
     private static final String CMD_DONE = "done";
 
     public static void main(String[] args) {
-        /*String logo = " ____        _        \n"
+        String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);*/
+        System.out.println("Hello from\n" + logo);
         
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};

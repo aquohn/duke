@@ -6,23 +6,29 @@
 
 JFLAGS = -g
 JC = javac
+BUILDDIR = ../../../build
 
-TASKS = ToDo.class Event.class Deadline.class
+_TASKS = ToDo.class Event.class Deadline.class
+TASKS = $(patsubst %,$(BUILDDIR)/%,$(_TASKS))
 
 #
 # define default compilation behaviour for class files
 #
 
-%.class: %.java
-	$(JC) $(JFLAGS) $<
+$(BUILDDIR)/%.class: %.java
+	$(JC) $(JFLAGS) -d $(BUILDDIR) -cp $(BUILDDIR) $<
 
 #
 # default make target, will build dependencies on right of colon if needed
 #
 
-Duke.class: $(TASKS)
+$(BUILDDIR)/Duke.class: $(TASKS)
 
-$(TASKS): %.class: Task.class
+#
+# tasks, need to rebuilt if Task.java changes
+#
+
+$(TASKS): %.class: $(BUILDDIR)/Task.class
 
 #
 # ignore files
