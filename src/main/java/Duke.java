@@ -8,6 +8,7 @@ public class Duke {
 
     private static final String CMD_LIST = "list";
     private static final String CMD_BYE = "bye";
+    private static final String CMD_DONE = "done";
 
     public static void main(String[] args) {
         /*String logo = " ____        _        \n"
@@ -23,11 +24,13 @@ public class Duke {
         say(hiArr);
         
         ArrayList<Task> taskList = new ArrayList<Task>();
+        String inputStr;
         String[] sayArr = new String[1];
         Scanner scanIn = new Scanner(System.in);
         while (true) {
-          sayArr[0] = scanIn.nextLine();
-          switch (sayArr[0]) {
+          inputStr = scanIn.nextLine();
+          String[] argArr = inputStr.split();
+          switch (argArr[0]) {
           case CMD_LIST:
               listTasks(taskList); //these names ordinarily make more sense than they appear to here
               break;
@@ -36,8 +39,8 @@ public class Duke {
               System.exit(0);
               break;
           default:
-              taskList.add(new Task(sayArr[0]));
-              sayArr[0] = "added: " + sayArr[0]; //parametrise for translation?
+              taskList.add(new Task(inputStr));
+              sayArr[0] = "added: " + inputStr; //parametrise for translation?
               say(sayArr);
           }
         }
