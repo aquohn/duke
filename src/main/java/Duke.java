@@ -35,6 +35,7 @@ public class Duke {
         ArrayList<Task> taskList = new ArrayList<Task>();
         String inputStr;
         String[] sayArr = new String[1];
+        String[] splitArr;
         Scanner scanIn = new Scanner(System.in);
         while (true) {
           Boolean isValid = false;
@@ -65,32 +66,36 @@ public class Duke {
               break;
 
           case CMD_TODO:
-              taskList.add(new ToDo(inputStr.substr(CMD_TODO)));
+              taskList.add(new ToDo(inputStr.substring(CMD_TODO.length())));
               addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.parseInt(taskList.size()) + " tasks in the list."
+              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+              say(addArr);
+              break;
 
           case CMD_EVENT:
-              String[] splitArr = inputStr.split(KW_AT, 2);
-              if (splitArr[2].length() == 0) {
+              splitArr = inputStr.split(KW_AT, 2);
+              if (splitArr[1].length() == 0) {
                   break;
               }
               isValid = true;
               // remove command name from task name
-              taskList.add(new Event(splitArr[0].substr(CMD_EVENT.length()), splitArr[1]));
+              taskList.add(new Event(splitArr[0].substring(CMD_EVENT.length()), splitArr[1]));
               addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.parseInt(taskList.size()) + " tasks in the list."
+              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+              say(addArr);
               break;
           
           case CMD_DLINE:
-              String[] splitArr = inputStr.split(KW_BY, 2);
-              if (splitArr[2].length() == 0) {
+              splitArr = inputStr.split(KW_BY, 2);
+              if (splitArr[1].length() == 0) {
                   break;
               }
               isValid = true;
               // remove command name from task name
-              taskList.add(new Deadline(splitArr[0].substr(CMD_DLINE.length()), splitArr[1]));
+              taskList.add(new Deadline(splitArr[0].substring(CMD_DLINE.length()), splitArr[1]));
               addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.parseInt(taskList.size()) + " tasks in the list."
+              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+              say(addArr);
               break;
           }
 
