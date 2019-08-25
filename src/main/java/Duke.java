@@ -111,24 +111,30 @@ public class Duke {
         }
         say(sayArr);
     }
-
-    private static Boolean addTask(ArrayList<Task> taskList, Class<T extends Task> taskClass, String inputStr, String keyword, String cmd) {
+    
+    private static <T extends Task> Boolean addTask(ArrayList<Task> taskList, Class<T> taskClass, String inputStr, String keyword, String cmd) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         Class[] oneString = {String.class};
         Class[] twoStrings = {String.class, String.class};
         T newTask;
 
-        if (keyword != null) { // Task type consists of two parts separated by a keyword
-            String[] splitArr = inputStr.split(keyword, 2);
-            if (splitArr.length < 2) {
-                return false;
+        try {
+            if (keyword != null) { // Task consists of two parts separated by a keyword
+                String[] splitArr = inputStr.split(keyword, 2);
+                if (splitArr.length < 2) {
+                    return false;
+                } else {
+                    Constructor taskConst = taskClass.getConstructor(twoStrings);
+                    newTask = (T) taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
+                }
             } else {
-                Constructor taskConst = taskClass.getConstructor(twoStrings);
-                newTask = (T) taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
+                Constructor taskConst = taskClass.getConstructor(oneString);
+                newTask = (T) taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length())));
             }
-        } else {
-            Constructor taskConst = taskClass.getConstructor(oneString);
-            newTask = (T) taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length())));
+        } catch (Exception excp) {
+            String[] errArr = {"Can't create new task!"};
+            say(errArr);
+            return false;
         }
         taskList.add(newTask);
         addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
