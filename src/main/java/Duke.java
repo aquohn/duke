@@ -65,22 +65,19 @@ public class Duke {
               break;
 
           case CMD_TODO:
-              Constructor todoConst = ToDo.class.getConstructor({String.class});
-              if (addTask(taskList, todoConst, inputStr, null, CMD_TODO)) {
+              if (addTask(taskList, ToDo.class, inputStr, null, CMD_TODO)) {
                   isValid = true;
               }
               break;
 
           case CMD_EVENT:
-              Constructor eventConst = Event.class.getConstructor({String.class, String.class});
-              if (addTask(taskList, eventConst, inputStr, KW_AT, CMD_EVENT)) {
+              if (addTask(taskList, Event.class, inputStr, KW_AT, CMD_EVENT)) {
                   isValid = true;
               }
               break;
           
           case CMD_DLINE:
-              Constructor dlineConst = Deadline.class.getConstructor({String.class, String.class});
-              if (addTask(taskList, dlineConst, inputStr, KW_BY, CMD_DLINE)) {
+              if (addTask(taskList, Deadline.class, inputStr, KW_BY, CMD_DLINE)) {
                   isValid = true;
               }
               break;
@@ -91,7 +88,8 @@ public class Duke {
           }
         }
     }
-
+    
+    // for Duke to say any arbitrary message
     private static void say(String[] msgArr) {
       String line = "    ____________________________________________________________";
       String indent = "    ";
@@ -112,17 +110,22 @@ public class Duke {
         say(sayArr);
     }
 
-    private static Boolean addTask(ArrayList<Task> taskList, Constructor taskConst, String inputStr, String keyword, String cmd) {
+    private static Boolean addTask(ArrayList<Task> taskList, Class taskClass, String inputStr, String keyword, String cmd) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
-        if (keyword != null) {
+        Class[] oneString = {String.class};
+        Class[] twoStrings = {String.class, String.class};
+
+        if (keyword != null) { // Task type consists of two parts separated by a keyword
             String[] splitArr = inputStr.split(keyword, 2);
             if (splitArr.length < 2) {
                 return false;
             } else {
-                taskList.add(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
+                Constructor taskConst = taskClass.getConstructor(twoStrings);
+                taskList.add(taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1])));
             }
         } else {
-            taskList.add(taskConst.newInstance(inputStr.substring(cmd.length())));
+            Constructor taskConst = taskClass.getConstructor(oneString);
+            taskList.add(taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length()))));
         }
         addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
         addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
