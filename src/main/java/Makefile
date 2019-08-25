@@ -4,7 +4,7 @@
 # define compiler and compiler flag variables
 #
 
-JFLAGS = -g
+# JFLAGS = -g # JFLAGS not set, will default to empty string
 JC = javac
 BUILDDIR = ../../../build
 
@@ -23,6 +23,9 @@ $(BUILDDIR)/%.class: %.java
 #
 
 $(BUILDDIR)/Duke.class: $(TASKS)
+
+debug: JFLAGS = -g
+debug: $(BUILDDIR)/Duke.class
 
 #
 # tasks, need to rebuilt if Task.java changes
