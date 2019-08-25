@@ -17,6 +17,7 @@ public class Duke {
     private static final String KW_BY = "/by";
     
     public static void main(String[] args) {
+        //print welcome message
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -24,6 +25,7 @@ public class Duke {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("\nHello from\n" + logo);
         
+        //standard messages
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};
         String[] errArr = {"I can't do that!"};
@@ -37,6 +39,7 @@ public class Duke {
         String[] sayArr = new String[1];
         String[] splitArr;
         Scanner scanIn = new Scanner(System.in);
+
         while (true) {
           Boolean isValid = true;
           inputStr = scanIn.nextLine();
@@ -116,7 +119,7 @@ public class Duke {
         T newTask;
 
         try {
-            if (keyword != null) { // Task consists of two parts separated by a keyword
+            if (keyword != null) { //Task consists of two parts separated by a keyword
                 String[] splitArr = inputStr.split(keyword, 2);
                 if (splitArr.length < 2) {
                     return false;
@@ -128,8 +131,8 @@ public class Duke {
                 Constructor taskConst = taskClass.getConstructor(oneString);
                 newTask = (T) taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length())));
             }
-        } catch (Exception excp) {
-            String[] errArr = {"Can't create new task!"};
+        } catch (Exception excp) { //catch errors from generics
+            String[] errArr = {excp.Message};
             say(errArr);
             return false;
         }

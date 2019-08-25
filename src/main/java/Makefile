@@ -22,7 +22,9 @@ $(BUILDDIR)/%.class: %.java
 # default make target, will build dependencies on right of colon if needed
 #
 
-$(BUILDDIR)/Duke.class: $(TASKS)
+$(BUILDDIR)/Duke.class: $(TASKS) $(BUILDDIR)/DukeException.class
+
+$(BUILDDIR)/DukeException.class: $(TASKS)
 
 debug: JFLAGS = -g
 debug: $(BUILDDIR)/Duke.class
