@@ -10,7 +10,11 @@ public class Task {
     }
 
     public void markDone() {
-        isDone = true; 
+        if (isDone) {
+            throw new DukeException("Oops! :( You already did that task!");
+        } else {
+            isDone = true; 
+        }
     }
 
     public String toString() {
