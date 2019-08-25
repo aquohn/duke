@@ -64,6 +64,8 @@ public class Duke {
               }
               break;
 
+          //TODO: investigate possibility of returning Object and casting within this context
+
           case CMD_TODO:
               if (addTask(taskList, ToDo.class, inputStr, null, CMD_TODO)) {
                   isValid = true;
@@ -110,10 +112,11 @@ public class Duke {
         say(sayArr);
     }
 
-    private static Boolean addTask(ArrayList<Task> taskList, Class taskClass, String inputStr, String keyword, String cmd) {
+    private static Boolean addTask(ArrayList<Task> taskList, Class<T extends Task> taskClass, String inputStr, String keyword, String cmd) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         Class[] oneString = {String.class};
         Class[] twoStrings = {String.class, String.class};
+        T newTask;
 
         if (keyword != null) { // Task type consists of two parts separated by a keyword
             String[] splitArr = inputStr.split(keyword, 2);
@@ -121,12 +124,13 @@ public class Duke {
                 return false;
             } else {
                 Constructor taskConst = taskClass.getConstructor(twoStrings);
-                taskList.add(taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1])));
+                newTask = (T) taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
             }
         } else {
             Constructor taskConst = taskClass.getConstructor(oneString);
-            taskList.add(taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length()))));
+            newTask = (T) taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length())));
         }
+        taskList.add(newTask);
         addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
         addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
         say(addArr);
