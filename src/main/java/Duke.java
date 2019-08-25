@@ -1,6 +1,7 @@
 import java.lang.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.reflect.Constructor;
 
 public class Duke {
 
@@ -27,7 +28,6 @@ public class Duke {
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};
         String[] errArr = {"I can't do that!"};
-        String[] addArr = {"Got it, I've added this task:", "", ""};
         String[] doneArr = {"Nice! I've marked this task as done:", ""};
 
         say(hiArr);
@@ -35,7 +35,6 @@ public class Duke {
         ArrayList<Task> taskList = new ArrayList<Task>();
         String inputStr;
         String[] sayArr = new String[1];
-        String[] splitArr;
         Scanner scanIn = new Scanner(System.in);
         while (true) {
           Boolean isValid = false;
@@ -66,36 +65,24 @@ public class Duke {
               break;
 
           case CMD_TODO:
-              taskList.add(new ToDo(inputStr.substring(CMD_TODO.length())));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
+              Constructor todoConst = ToDo.class.getConstructor({String.class});
+              if (addTask(taskList, todoConst, inputStr, null, CMD_TODO)) {
+                  isValid = true;
+              }
               break;
 
           case CMD_EVENT:
-              splitArr = inputStr.split(KW_AT, 2);
-              if (splitArr[1].length() == 0) {
-                  break;
+              Constructor eventConst = Event.class.getConstructor({String.class, String.class});
+              if (addTask(taskList, eventConst, inputStr, KW_AT, CMD_EVENT)) {
+                  isValid = true;
               }
-              isValid = true;
-              // remove command name from task name
-              taskList.add(new Event(splitArr[0].substring(CMD_EVENT.length()), splitArr[1]));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
               break;
           
           case CMD_DLINE:
-              splitArr = inputStr.split(KW_BY, 2);
-              if (splitArr[1].length() == 0) {
-                  break;
+              Constructor dlineConst = Deadline.class.getConstructor({String.class, String.class});
+              if (addTask(taskList, dlineConst, inputStr, KW_BY, CMD_DLINE)) {
+                  isValid = true;
               }
-              isValid = true;
-              // remove command name from task name
-              taskList.add(new Deadline(splitArr[0].substring(CMD_DLINE.length()), splitArr[1]));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
               break;
           }
 
@@ -123,5 +110,23 @@ public class Duke {
             sayArr[i] = Integer.toString(i + 1) + "." + currTask.toString();
         }
         say(sayArr);
+    }
+
+    private static Boolean addTask(ArrayList<Task> taskList, Constructor taskConst, String inputStr, String keyword, String cmd) {
+        String[] addArr = {"Got it, I've added this task:", "", ""};
+        if (keyword != null) {
+            String[] splitArr = inputStr.split(keyword, 2);
+            if (splitArr.length < 2) {
+                return false;
+            } else {
+                taskList.add(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
+            }
+        } else {
+            taskList.add(taskConst.newInstance(inputStr.substring(cmd.length())));
+        }
+        addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
+        addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+        say(addArr);
+        return true;
     }
 }
