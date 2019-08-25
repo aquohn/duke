@@ -150,8 +150,11 @@ public class Duke {
                 newTask = (T) taskClass.cast(taskConst.newInstance(desc));
             }
             taskList.add(newTask);
+            
             addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-            addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+            int taskCount = taskList.size();
+            String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
+            addArr[2] = "Now you have " + taskCountStr + " in the list.";
             say(addArr);
 
         } catch (Exception excp) { //catch exceptions from generics, incidentally also catches Duke exceptions
