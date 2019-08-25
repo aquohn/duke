@@ -1,5 +1,3 @@
-import java.lang.*;
-
 public class Deadline extends Task {
 
     private String by;

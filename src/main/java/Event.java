@@ -1,5 +1,3 @@
-import java.lang.*;
-
 public class Event extends Task {
 
     private String at;

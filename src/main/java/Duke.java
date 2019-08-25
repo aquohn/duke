@@ -1,6 +1,6 @@
-import java.lang.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.reflect.Constructor;
 
 public class Duke {
 
@@ -22,7 +22,7 @@ public class Duke {
                 + "| | | | | | | |/ / _ \\\n"
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
+        System.out.println("\nHello from\n" + logo);
         
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};
@@ -67,37 +67,19 @@ public class Duke {
               break;
 
           case CMD_TODO:
-              taskList.add(new ToDo(inputStr.substring(CMD_TODO.length())));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
+              isValid = addTask(taskList, ToDo.class, inputStr, null, CMD_TODO);
               break;
 
           case CMD_EVENT:
-              splitArr = inputStr.split(KW_AT, 2);
-              if (splitArr.length == 1) {
-                  isValid = false;
-                  break;
-              }
-              // remove command name from task name
-              taskList.add(new Event(splitArr[0].substring(CMD_EVENT.length()), splitArr[1]));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
+              isValid = addTask(taskList, Event.class, inputStr, KW_AT, CMD_EVENT);
               break;
           
           case CMD_DLINE:
-              splitArr = inputStr.split(KW_BY, 2);
-              if (splitArr.length == 1) {
-                  isValid = false;
-                  break;
-              }
-              // remove command name from task name
-              taskList.add(new Deadline(splitArr[0].substring(CMD_DLINE.length()), splitArr[1]));
-              addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
-              addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
-              say(addArr);
+              isValid = addTask(taskList, Deadline.class, inputStr, KW_BY, CMD_DLINE);
               break;
+
+          default:
+              isValid = false;
           }
 
           if (!isValid) {
@@ -105,7 +87,8 @@ public class Duke {
           }
         }
     }
-
+    
+    // for Duke to say any arbitrary message
     private static void say(String[] msgArr) {
       String line = "    ____________________________________________________________";
       String indent = "    ";
@@ -124,5 +107,36 @@ public class Duke {
             sayArr[i] = Integer.toString(i + 1) + "." + currTask.toString();
         }
         say(sayArr);
+    }
+    
+    private static <T extends Task> Boolean addTask(ArrayList<Task> taskList, Class<T> taskClass, String inputStr, String keyword, String cmd) {
+        String[] addArr = {"Got it, I've added this task:", "", ""};
+        Class[] oneString = {String.class};
+        Class[] twoStrings = {String.class, String.class};
+        T newTask;
+
+        try {
+            if (keyword != null) { // Task consists of two parts separated by a keyword
+                String[] splitArr = inputStr.split(keyword, 2);
+                if (splitArr.length < 2) {
+                    return false;
+                } else {
+                    Constructor taskConst = taskClass.getConstructor(twoStrings);
+                    newTask = (T) taskClass.cast(taskConst.newInstance(splitArr[0].substring(cmd.length()), splitArr[1]));
+                }
+            } else {
+                Constructor taskConst = taskClass.getConstructor(oneString);
+                newTask = (T) taskClass.cast(taskConst.newInstance(inputStr.substring(cmd.length())));
+            }
+        } catch (Exception excp) {
+            String[] errArr = {"Can't create new task!"};
+            say(errArr);
+            return false;
+        }
+        taskList.add(newTask);
+        addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
+        addArr[2] = "Now you have " + Integer.toString(taskList.size()) + " tasks in the list.";
+        say(addArr);
+        return true;
     }
 }

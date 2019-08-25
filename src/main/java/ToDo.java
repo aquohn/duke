@@ -1,5 +1,3 @@
-import java.lang.*;
-
 public class ToDo extends Task {
 
     public ToDo(String _name) {

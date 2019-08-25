@@ -1,5 +1,3 @@
-import java.lang.*;
-
 public class Task {
 
     private String name;
