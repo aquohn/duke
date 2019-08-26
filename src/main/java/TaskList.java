@@ -120,8 +120,6 @@ public class TaskList {
         return addArr;
     }
 
-
-
     private ArrayList<Task> parseTaskFile(File taskFile) {
         ArrayList<Task> taskArrList = new ArrayList<Task>();
 
@@ -181,7 +179,8 @@ public class TaskList {
 
     private void writeTaskFile() {
         String taskFileStr = "";
-        //for 
+        for (int i = 0; i < taskArrList.size(); ++i) {
+            taskArrList
     }
 
     // TODO: move this functionality to the classes

@@ -1,5 +1,3 @@
-import java.lang.reflect.Constructor;
-
 public class Task {
 
     private String name;
@@ -9,11 +7,12 @@ public class Task {
     public Task(String _name) {
         name = _name;
         isDone = false;
+        type = 'K';
     }
 
     public void markDone() {
         if (isDone) {
-            throw new DukeException("Oops! :( You already did that task!");
+            throw new DukeException("You already did that task!");
         } else {
             isDone = true; 
         }
@@ -21,5 +20,9 @@ public class Task {
 
     public String toString() {
         return "[" + (isDone ? "\u2713" : "\u2718") + "] " + name; //ternary operator returns tick or X
+    }
+
+    public String toData() {
+        return type + "\t" + (isDone ? "1" : "0") + "\t" + name;
     }
 }

@@ -11,4 +11,8 @@ public class Event extends Task {
     public String toString() {
         return "[" + type + "]" + super.toString() + "(at: " + at + ")";
     }
+
+    public String toData() {
+        return super.toData() + "\t" + at;
+    }
 }
