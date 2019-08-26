@@ -22,12 +22,4 @@ public class Task {
     public String toString() {
         return "[" + (isDone ? "\u2713" : "\u2718") + "] " + name; //ternary operator returns tick or X
     }
-
-    public Constructor defaultConstructor() {
-        try {
-            return Task.class.getConstructor(new Class[] {String.class});
-        } catch (Exception excp) {
-            throw new DukeException("Something has gone horribly wrong! Try reinstalling?");
-        }
-    }
 }
