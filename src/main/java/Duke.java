@@ -7,7 +7,7 @@ import java.io.FileWriter;
 public class Duke {
 
     // TODO: create HashMap of (string, function) pairs for commands
-    
+
     // TODO: convert constants to enums
 
     public static final String CMD_LIST = "list";
@@ -19,6 +19,8 @@ public class Duke {
 
     public static final String KW_AT = "/at";
     public static final String KW_BY = "/by";
+
+    private TaskList tasklist;
 
     public static void main(String[] args) {
         //print welcome message
@@ -37,11 +39,27 @@ public class Duke {
 
         say(hiArr);
 
-        ArrayList<Task> taskList = new ArrayList<Task>();
         String inputStr;
         String[] sayArr = new String[1];
         String[] splitArr;
         Scanner scanIn = new Scanner(System.in);
+
+        try {
+            taskList = new TaskList(false);
+        } catch (DukeResetException excp) {
+            char resetChar;
+            String[] errArr = {excp.getMessage(), "Do you want to reset your Duke data now,"
+                    + " to continue using Duke? (y/n)"};
+            say(errArr);
+            while (true) { //wait for user to respond
+                resetChar = scanIn.nextLine().charAt(0);
+                if (resetChar == 'y' || resetChar == 'Y') {
+                    taskList = new TaskList(true);
+                } else if (resetChar == 'n' || resetChar == 'N') {
+                    System.exit(0);
+                }
+            }
+        }
 
         while (true) {
             Boolean isValid = true;
@@ -50,50 +68,54 @@ public class Duke {
 
             try {
                 switch (argArr[0]) {
-                case CMD_LIST:
-                    listTasks(taskList); //these names ordinarily make more sense than they appear to here
-                    break;
+                    case CMD_LIST:
+                        listTasks(taskList); //these names ordinarily make more sense than they appear to here
+                        break;
 
-                case CMD_BYE:
-                    say(byeArr);
-                    System.exit(0);
-                    break;
+                    case CMD_BYE:
+                        TaskList.close();
+                        scanIn.close();
+                        say(byeArr);
+                        System.exit(0);
+                        break;
 
-                case CMD_DONE:
-                    if (argArr[1].matches("\\d+")) { //if second arg is an integer
-                        int idx = Integer.parseInt(argArr[1]) - 1;
-                        if (idx < taskList.size()) {
-                            Task currTask = taskList.get(idx);
-                            currTask.markDone();
-                            doneArr[1] = "  " + currTask.toString();
-                            say(doneArr);
+                    case CMD_DONE:
+                        if (argArr[1].matches("\\d+")) { //if second arg is an integer
+                            int idx = Integer.parseInt(argArr[1]) - 1;
+                            if (idx < taskList.size()) {
+                                Task currTask = taskList.get(idx);
+                                currTask.markDone();
+                                doneArr[1] = "  " + currTask.toString();
+                                say(doneArr);
+                            } else {
+                                throw new DukeException("I don't have that entry in the list!");
+                            }
                         } else {
-                            throw new DukeException("I don't have that entry in the list!");
+                            throw new DukeException("You didn't tell me which entry to mark as done!");
                         }
-                    } else {
-                        throw new DukeException("You didn't tell me which entry to mark as done!");
-                    }
-                    break;
+                        break;
 
-                case CMD_TODO:
-                    addTask(taskList, ToDo.class, inputStr, null, CMD_TODO);
-                    break;
+                    case CMD_TODO:
+                        addTask(taskList, ToDo.class, inputStr, null, CMD_TODO);
+                        break;
 
-                case CMD_EVENT:
-                    addTask(taskList, Event.class, inputStr, KW_AT, CMD_EVENT);
-                    break;
+                    case CMD_EVENT:
+                        addTask(taskList, Event.class, inputStr, KW_AT, CMD_EVENT);
+                        break;
 
-                case CMD_DLINE:
-                    addTask(taskList, Deadline.class, inputStr, KW_BY, CMD_DLINE);
-                    break;
+                    case CMD_DLINE:
+                        addTask(taskList, Deadline.class, inputStr, KW_BY, CMD_DLINE);
+                        break;
 
-                default:
-                    throw new DukeException("I'm sorry, but I don't know what that means!");
+                    default:
+                        throw new DukeException("I'm sorry, but I don't know what that means!");
                 }
             } catch (DukeException excp) {
-                String[] errArr = new String[1];
+                String[] errArr;
+                errArr = new String[1];
                 errArr[0] = excp.getMessage();
                 say(errArr);
+
             }
         }
     }
@@ -154,7 +176,7 @@ public class Duke {
                 newTask = (T) taskClass.cast(taskConst.newInstance(desc));
             }
             taskList.add(newTask);
-            
+
             int taskCount = taskList.size();
             addArr[1] = "  " + taskList.get(taskCount - 1).toString();
             String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");

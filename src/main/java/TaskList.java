@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class TaskList {
 
@@ -18,75 +20,18 @@ public class TaskList {
     private File taskFile;
     private FileWriter taskFileWr;
     private String[] addArr = {"Got it, I've added this task:", "", ""};
-    private String[] doneArr = {"Nice! I've marked this task as done:", ""};
 
-    public TaskList() {
+    public TaskList(boolean isReset) {
         taskFile = new File("../data/tasks.tsv");
-        if (taskFile.exists()) {
+        if (!isReset && taskFile.exists()) {
             taskArrList = parseTaskFile(taskFile);
         } else {
             taskArrList = new ArrayList<Task>();
         }
-        taskFileWr = new FileWriter(taskFile);
-    }
-
-    public static void main(String[] args) {
-        String inputStr;
-        String[] splitArr;
-        Scanner scanIn = new Scanner(System.in);
-
-        while (true) {
-            Boolean isValid = true;
-            inputStr = scanIn.nextLine();
-            String[] argArr = inputStr.split(" ");
-
-            try {
-                switch (argArr[0]) {
-                    case CMD_LIST:
-                        listTasks(taskArrList); //these names ordinarily make more sense than they appear to here
-                        break;
-
-                    case CMD_BYE:
-                        say(byeArr);
-                        System.exit(0);
-                        break;
-
-                    case CMD_DONE:
-                        if (argArr[1].matches("\\d+")) { //if second arg is an integer
-                            int idx = Integer.parseInt(argArr[1]) - 1;
-                            if (idx < taskArrList.size()) {
-                                Task currTask = taskArrList.get(idx);
-                                currTask.markDone();
-                                doneArr[1] = "  " + currTask.toString();
-                                say(doneArr);
-                            } else {
-                                throw new DukeException("I don't have that entry in the list!");
-                            }
-                        } else {
-                            throw new DukeException("You didn't tell me which entry to mark as done!");
-                        }
-                        break;
-
-                    case CMD_TODO:
-                        addTask(taskArrList, ToDo.class, inputStr, null, CMD_TODO);
-                        break;
-
-                    case CMD_EVENT:
-                        addTask(taskArrList, Event.class, inputStr, KW_AT, CMD_EVENT);
-                        break;
-
-                    case CMD_DLINE:
-                        addTask(taskArrList, Deadline.class, inputStr, KW_BY, CMD_DLINE);
-                        break;
-
-                    default:
-                        throw new DukeException("I'm sorry, but I don't know what that means!");
-                }
-            } catch (DukeException excp) {
-                String[] errArr = new String[1];
-                errArr[0] = excp.getMessage();
-                say(errArr);
-            }
+        try {
+            taskFileWr = new FileWriter(taskFile); //will be avoided via exception if file corrupted
+        } catch (IOException excp) {
+            throw new DukeFatalException("Unable to write to data file, try checking your permissions?");
         }
     }
 
@@ -95,26 +40,40 @@ public class TaskList {
         if (taskCount == 0) {
             throw new DukeException("You don't have any tasks yet!");
         }
-        String[] sayArr = new String[taskCount];
+        String[] taskArr = new String[taskCount];
         for (int i = 0; i < taskCount; ++i) {
             Task currTask = taskArrList.get(i);
-            sayArr[i] = Integer.toString(i + 1) + "." + currTask.toString();
+            taskArr[i] = Integer.toString(i + 1) + "." + currTask.toString();
         }
-        return sayArr;
+        return taskArr;
     }
 
-    public void markDone() {
+    public String[] markDone(String idxStr) {
+        if (idxStr.matches("\\d+")) { //if second arg is an integer
+            int idx = Integer.parseInt(idxStr) - 1;
+            if (idx < taskArrList.size()) {
+                Task currTask = taskArrList.get(idx);
+                currTask.markDone();
+                String[] doneArr = {"Nice! I've marked this task as done:", ""};
+                doneArr[1] = "  " + currTask.toString();
 
+                return doneArr;
+            } else {
+                throw new DukeException("I don't have that entry in the list!");
+            }
+        } else {
+            throw new DukeException("You didn't tell me which entry to mark as done!");
+        }
     }
 
-    private static ArrayList<Task> parseTaskFile(File taskFile) {
-        Scanner taskScanner = new Scanner(taskFile);
+    private ArrayList<Task> parseTaskFile(File taskFile) {
         ArrayList<Task> taskArrList = new ArrayList<Task>();
 
         //message for when data corruption is detected in the file
         String corrupt = "Data file has been corrupted!";
 
         try {
+            Scanner taskScanner = new Scanner(taskFile);
             while (taskScanner.hasNextLine()) {
                 String[] taskArr = taskScanner.nextLine().split("\t");
                 String taskType = taskArr[0];
@@ -127,7 +86,7 @@ public class TaskList {
                 } else if (doneStr == "0") {
                     isDone = false;
                 } else {
-                    throw new DukeException(corrupt);
+                    throw new DukeResetException(corrupt);
                 }
 
                 //add tasks to taskArrList
@@ -151,21 +110,33 @@ public class TaskList {
                     }
                     taskArrList.add(currDeadline);
                 } else {
-                    throw new DukeException(corrupt);
+                    throw new DukeResetException(corrupt);
                 }
             }
+            taskScanner.close();
         } catch (IndexOutOfBoundsException excp) {
-            throw new DukeException(corrupt);
+            throw new DukeResetException(corrupt);
+        } catch (FileNotFoundException excp) {
+            throw new DukeFatalException("Unable to find data file, try opening Duke again?");
         }
 
         return taskArrList;
     }
 
+    public void close() {
+        writeData();
+    }
+
+    private void writeData() {
+
+    }
+
+    // TODO: in major need of refactoring, try to remove reflection/generics if possible and use polymorphism instead
     private static <T extends Task> void addTask(ArrayList<Task> taskList, Class<T> taskClass, String inputStr, String keyword, String cmd) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         String desc;
 
-        // TODO: change constructor to take a string array
+        // TODO: change constructors to take a string array
         Class[] oneString = {String.class};
         Class[] twoStrings = {String.class, String.class};
         T newTask;
@@ -194,12 +165,11 @@ public class TaskList {
                 newTask = (T) taskClass.cast(taskConst.newInstance(desc));
             }
             taskList.add(newTask);
-            
+
             int taskCount = taskList.size();
             addArr[1] = "  " + taskList.get(taskCount - 1).toString();
             String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
             addArr[2] = "Now you have " + taskCountStr + " in the list.";
-            say(addArr);
 
         } catch (DukeException excp) {
             throw excp; //let Duke handle it
@@ -208,6 +178,7 @@ public class TaskList {
         }
     }
 
+    // TODO: move this functionality to the classes
     private static DukeException generateInvalidTaskException(Class taskClass) {
         if (taskClass == Event.class) {
             return new DukeException("Invalid event! Events must specify when they are /at.");
