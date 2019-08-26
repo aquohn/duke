@@ -1,20 +1,24 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.reflect.Constructor;
+import java.io.File;
+import java.io.FileWriter;
 
 public class Duke {
 
     // TODO: create HashMap of (string, function) pairs for commands
+    
+    // TODO: convert constants to enums
 
-    private static final String CMD_LIST = "list";
-    private static final String CMD_BYE = "bye";
-    private static final String CMD_DONE = "done";
-    private static final String CMD_TODO = "todo";
-    private static final String CMD_EVENT = "event";
-    private static final String CMD_DLINE = "deadline";
+    public static final String CMD_LIST = "list";
+    public static final String CMD_BYE = "bye";
+    public static final String CMD_DONE = "done";
+    public static final String CMD_TODO = "todo";
+    public static final String CMD_EVENT = "event";
+    public static final String CMD_DLINE = "deadline";
 
-    private static final String KW_AT = "/at";
-    private static final String KW_BY = "/by";
+    public static final String KW_AT = "/at";
+    public static final String KW_BY = "/by";
 
     public static void main(String[] args) {
         //print welcome message
@@ -151,8 +155,8 @@ public class Duke {
             }
             taskList.add(newTask);
             
-            addArr[1] = "  " + taskList.get(taskList.size() - 1).toString();
             int taskCount = taskList.size();
+            addArr[1] = "  " + taskList.get(taskCount - 1).toString();
             String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
             addArr[2] = "Now you have " + taskCountStr + " in the list.";
             say(addArr);
