@@ -1,5 +1,3 @@
-import java.lang.reflect.Constructor;
-
 public class ToDo extends Task {
 
     public ToDo(String _name) {

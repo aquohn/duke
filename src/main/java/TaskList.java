@@ -19,7 +19,6 @@ public class TaskList {
     private ArrayList<Task> taskArrList;
     private File taskFile;
     private FileWriter taskFileWr;
-    private String[] addArr = {"Got it, I've added this task:", "", ""};
 
     public TaskList(boolean isReset) {
         taskFile = new File("../data/tasks.tsv");
@@ -62,9 +61,66 @@ public class TaskList {
                 throw new DukeException("I don't have that entry in the list!");
             }
         } else {
-            throw new DukeException("You didn't tell me which entry to mark as done!");
+            throw new DukeException("You need to tell me what the number of the entry is!");
         }
     }
+
+    public void close() {
+        try {
+            writeTaskFile();
+            taskFileWr.close();
+        } catch (IOException excp) {
+            throw new DukeFatalException("Unable to write data! Some data may have been lost,");
+        }
+    }
+
+    // TODO: in major need of refactoring, try to remove reflection/generics if possible and use polymorphism instead
+    public <T extends Task> String[] addTask(Class<T> taskClass, String inputStr, String keyword) {
+        String[] addArr = {"Got it, I've added this task:", "", ""};
+        String desc;
+
+        // TODO: change constructors to take a string array
+        Class[] oneString = {String.class};
+        Class[] twoStrings = {String.class, String.class};
+        T newTask;
+
+        try {
+            if (keyword != null) { //Task consists of two parts separated by a keyword
+                String[] splitArr = inputStr.split(keyword, 2);
+
+                if (splitArr.length < 2) {
+                    throw generateInvalidTaskException(taskClass);
+                } else {
+                    Constructor taskConst = taskClass.getConstructor(twoStrings);
+                    desc = splitArr[0];
+                    if (desc.length() == 0) {
+                        throw new DukeException("The task description cannot be empty!");
+                    }
+                    newTask = (T) taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
+                } 
+            } else {
+                Constructor taskConst = taskClass.getConstructor(oneString);
+                if (inputStr.length() == 0) {
+                    throw new DukeException("The task description cannot be empty!");
+                }
+                newTask = (T) taskClass.cast(taskConst.newInstance(inputStr));
+            }
+            taskArrList.add(newTask);
+
+            int taskCount = taskArrList.size();
+            addArr[1] = "  " + taskArrList.get(taskCount - 1).toString();
+            String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
+            addArr[2] = "Now you have " + taskCountStr + " in the list.";
+
+        } catch (DukeException excp) {
+            throw excp; //let Duke handle it
+        } catch (Exception excp) { //catch exceptions from generics, should only trigger if installation corrupt
+            throw new DukeException("Can't create new tasks! Your installation might be corrupt. Try reinstalling?");
+        }
+        return addArr;
+    }
+
+
 
     private ArrayList<Task> parseTaskFile(File taskFile) {
         ArrayList<Task> taskArrList = new ArrayList<Task>();
@@ -123,63 +179,13 @@ public class TaskList {
         return taskArrList;
     }
 
-    public void close() {
-        writeData();
-    }
-
-    private void writeData() {
-
-    }
-
-    // TODO: in major need of refactoring, try to remove reflection/generics if possible and use polymorphism instead
-    private static <T extends Task> void addTask(ArrayList<Task> taskList, Class<T> taskClass, String inputStr, String keyword, String cmd) {
-        String[] addArr = {"Got it, I've added this task:", "", ""};
-        String desc;
-
-        // TODO: change constructors to take a string array
-        Class[] oneString = {String.class};
-        Class[] twoStrings = {String.class, String.class};
-        T newTask;
-
-        try {
-            if (keyword != null) { //Task consists of two parts separated by a keyword
-                String[] splitArr = inputStr.split(keyword, 2);
-
-                //NOTE: substring index OOB exceptions not caught, control flow excludes them
-                if (splitArr.length < 2) {
-                    throw generateInvalidTaskException(taskClass);
-                } else {
-                    Constructor taskConst = taskClass.getConstructor(twoStrings);
-                    desc = splitArr[0].substring(cmd.length());
-                    if (desc.length() == 0) {
-                        throw new DukeException("The task description cannot be empty!");
-                    }
-                    newTask = (T) taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
-                } 
-            } else {
-                Constructor taskConst = taskClass.getConstructor(oneString);
-                desc = inputStr.substring(cmd.length());
-                if (desc.length() == 0) {
-                    throw new DukeException("The task description cannot be empty!");
-                }
-                newTask = (T) taskClass.cast(taskConst.newInstance(desc));
-            }
-            taskList.add(newTask);
-
-            int taskCount = taskList.size();
-            addArr[1] = "  " + taskList.get(taskCount - 1).toString();
-            String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
-            addArr[2] = "Now you have " + taskCountStr + " in the list.";
-
-        } catch (DukeException excp) {
-            throw excp; //let Duke handle it
-        } catch (Exception excp) { //catch exceptions from generics, should only trigger if installation corrupt
-            throw new DukeException("Can't create new tasks! Your installation might be corrupt. Try reinstalling?");
-        }
+    private void writeTaskFile() {
+        String taskFileStr = "";
+        //for 
     }
 
     // TODO: move this functionality to the classes
-    private static DukeException generateInvalidTaskException(Class taskClass) {
+    private DukeException generateInvalidTaskException(Class taskClass) {
         if (taskClass == Event.class) {
             return new DukeException("Invalid event! Events must specify when they are /at.");
         } else if (taskClass == Deadline.class) {

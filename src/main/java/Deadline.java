@@ -1,5 +1,3 @@
-import java.lang.reflect.Constructor;
-
 public class Deadline extends Task {
 
     private String by;
