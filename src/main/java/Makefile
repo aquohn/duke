@@ -20,6 +20,9 @@ UTILS = $(patsubst %,$(BUILDDIR)/%,$(_UTILS))
 _TASKS = ToDo.class Event.class Deadline.class
 TASKS = $(patsubst %,$(BUILDDIR)/%,$(_TASKS))
 
+_TIMETASKS = Event.class Deadline.class
+TIMETASKS = $(patsubst %,$(BUILDDIR)/%,$(_TIMETASKS))
+
 _SYSTEMS = TaskList.class
 SYSTEMS = $(patsubst %,$(BUILDDIR)/%,$(_SYSTEMS))
 
@@ -42,7 +45,11 @@ $(BUILDDIR)/Duke.class: $(SYSTEMS)
 
 $(SYSTEMS): %.class: $(TASKS) $(UTILS)
 
+$(BUILDDIR)/TimedTask.class: $(UTILS)
+
 $(TASKS): %.class: $(BUILDDIR)/Task.class
+
+$(TIMETASKS): %.class: $(BUILDDIR)/TimedTask.class
 
 $(UTILS): %.class: $(BUILDDIR)/DukeException.class
 

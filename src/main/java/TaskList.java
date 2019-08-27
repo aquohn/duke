@@ -4,8 +4,12 @@ import java.lang.reflect.Constructor;
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileWriter;
+import java.time.LocalDateTime;
+
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.time.DateTimeException;
+import java.time.format.DateTimeParseException;
 
 public class TaskList {
 
@@ -72,29 +76,28 @@ public class TaskList {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         String desc;
 
-        // TODO: change constructors to take a string array
-        Class[] oneString = {String.class};
-        Class[] twoStrings = {String.class, String.class};
         T newTask;
 
         try {
-            // TODO: abstract string processing for arbitrary numbers of fields
-            if (keyword != null) { //Task consists of two parts separated by a keyword
+            if (TimedTask.class.isAssignableFrom(taskClass)) { 
+                //Task consists of desc and time separated by a keyword
                 String[] splitArr = inputStr.split(keyword, 2);
 
                 if (splitArr.length < 2) {
                     throw generateInvalidTaskException(taskClass);
                 } else {
                     desc = splitArr[0].strip();
-                    splitArr[1] = splitArr[1].strip();
+                    String datetimeStr = splitArr[1].strip();
                     if (desc.length() == 0) {
                         throw new DukeException("The task description cannot be empty!");
-                    } else if (splitArr[1].length() == 0) {
+                    } else if (datetimeStr.length() == 0) {
                         throw generateInvalidTaskException(taskClass);
                     }
                     
-                    Constructor<T> taskConst = taskClass.getConstructor(twoStrings);
-                    newTask = taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
+                    LocalDateTime datetime = LocalDateTime.parse(datetimeStr, TimedTask.PAT_DATETIME);
+                    Constructor<T> taskConst = taskClass.getConstructor(
+                            new Class<?>[] {String.class, LocalDateTime.class});
+                    newTask = taskClass.cast(taskConst.newInstance(desc, datetime));
                 } 
             } else {
                 desc = inputStr.strip();
@@ -102,7 +105,7 @@ public class TaskList {
                     throw new DukeException("The task description cannot be empty!");
                 }
                 
-                Constructor<T> taskConst = taskClass.getConstructor(oneString);
+                Constructor<T> taskConst = taskClass.getConstructor(new Class<?>[] {String.class});
                 newTask = taskClass.cast(taskConst.newInstance(desc));
             }
             taskArrList.add(newTask);
@@ -115,8 +118,12 @@ public class TaskList {
 
         } catch (DukeException excp) {
             throw excp; //let Duke handle it
+        } catch (DateTimeParseException excp) {
+            throw new DukeException("Date and time must be given as, e.g. "
+                    + LocalDateTime.now().format(TimedTask.PAT_DATETIME) + ".");
         } catch (Exception excp) { //catch exceptions from generics, should only trigger if installation corrupt
-            throw new DukeException("Can't create new tasks! Your installation might be corrupt. Try reinstalling?");
+            System.out.println(excp.toString());
+            throw new DukeFatalException("Can't create new tasks! Your installation might be corrupt. Try reinstalling?");
         }
         return addArr;
     }
@@ -133,6 +140,7 @@ public class TaskList {
                 String taskLine = taskScanner.nextLine();
                 String[] taskArr = taskLine.split("\t");
                 String taskType = taskArr[0];
+                LocalDateTime datetime;
                 boolean isDone;
 
                 //check if task is done
@@ -146,7 +154,7 @@ public class TaskList {
                 }
 
                 //add tasks to taskArrList
-                // TODO: look into ways to compact this
+                // TODO: look into ways to compact this, maybe a factory, switching factory inputs based on taskType?
                 if (taskType.equals("T")) {
                     ToDo currToDo = new ToDo(taskArr[2]);
                     if (isDone) {
@@ -154,13 +162,15 @@ public class TaskList {
                     }
                     taskArrList.add(currToDo);
                 } else if (taskType.equals("E")) {
-                    Event currEvent = new Event(taskArr[2], taskArr[3]);
+                    datetime = LocalDateTime.parse(taskArr[3], TimedTask.PAT_DATETIME);
+                    Event currEvent = new Event(taskArr[2], datetime);
                     if (isDone) {
                         currEvent.markDone();
                     }
                     taskArrList.add(currEvent);
                 } else if (taskType.equals("D")) {
-                    Deadline currDeadline = new Deadline(taskArr[2], taskArr[3]);
+                    datetime = LocalDateTime.parse(taskArr[3], TimedTask.PAT_DATETIME);
+                    Deadline currDeadline = new Deadline(taskArr[2], datetime);
                     if (isDone) {
                         currDeadline.markDone();
                     }
@@ -170,6 +180,8 @@ public class TaskList {
                 }
             }
             taskScanner.close();
+        } catch (DateTimeParseException excp) {
+            throw new DukeResetException(corrupt);
         } catch (IndexOutOfBoundsException excp) {
             throw new DukeResetException(corrupt);
         } catch (FileNotFoundException excp) {
@@ -199,9 +211,9 @@ public class TaskList {
     // TODO: move this functionality to the classes
     private DukeException generateInvalidTaskException(Class taskClass) {
         if (taskClass == Event.class) {
-            return new DukeException("Invalid event! Events must specify when they are /at.");
+            return new DukeException("Invalid event! I need to know the date and time that it is /at.");
         } else if (taskClass == Deadline.class) {
-            return new DukeException("Invalid deadline! Deadlines must specify when they are due /by.");
+            return new DukeException("Invalid deadline I need to know the date and time that it is due /by.");
         } else {
             return new DukeException("I don't recognise that type of class!");
         }
