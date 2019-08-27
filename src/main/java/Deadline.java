@@ -12,7 +12,8 @@ public class Deadline extends Task {
         return "[" + type + "]" + super.toString() + "(by: " + by + ")";
     }
 
+    @Override
     public String toData() {
-        return super.toData() + "\t" + at;
+        return super.toData() + "\t" + by;
     }
 }

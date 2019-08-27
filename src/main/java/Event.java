@@ -8,10 +8,12 @@ public class Event extends Task {
         at = _at;
     }
 
+    @Override
     public String toString() {
         return "[" + type + "]" + super.toString() + "(at: " + at + ")";
     }
 
+    @Override
     public String toData() {
         return super.toData() + "\t" + at;
     }

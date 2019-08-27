@@ -5,6 +5,7 @@ public class ToDo extends Task {
         type = 'T';
     }
 
+    @Override
     public String toString() {
         return "[" + type + "]" + super.toString();
     }

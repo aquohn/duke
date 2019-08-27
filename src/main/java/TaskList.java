@@ -11,26 +11,31 @@ public class TaskList {
 
     // TODO: create HashMap of (string, function) pairs for commands
 
-    //TSV files will have one entry per line, tabs disallowed in input
-
-    private static final String KW_AT = "/at";
-    private static final String KW_BY = "/by";
+    // TSV files will have one entry per line, tabs disallowed in input
 
     private ArrayList<Task> taskArrList;
     private File taskFile;
-    private FileWriter taskFileWr;
 
     public TaskList(boolean isReset) {
         taskFile = new File("../data/tasks.tsv");
-        if (!isReset && taskFile.exists()) {
-            taskArrList = parseTaskFile(taskFile);
-        } else {
-            taskArrList = new ArrayList<Task>();
-        }
         try {
-            taskFileWr = new FileWriter(taskFile); //will be avoided via exception if file corrupted
+            if (taskFile.exists()) {
+                if (isReset) {
+                    taskArrList = new ArrayList<Task>();
+                    if (taskFile.delete()) {
+                        taskFile.createNewFile();
+                    } else {
+                        throw new DukeFatalException("Unable to setup data file, try checking your permissions?"); 
+                    }
+                } else {
+                    taskArrList = parseTaskFile(taskFile);
+                }
+            } else {
+                taskArrList = new ArrayList<Task>();
+                taskFile.createNewFile();
+            }
         } catch (IOException excp) {
-            throw new DukeFatalException("Unable to write to data file, try checking your permissions?");
+            throw new DukeFatalException("Unable to setup data file, try checking your permissions?");
         }
     }
 
@@ -53,24 +58,15 @@ public class TaskList {
             if (idx < taskArrList.size()) {
                 Task currTask = taskArrList.get(idx);
                 currTask.markDone();
+                writeTaskFile();
                 String[] doneArr = {"Nice! I've marked this task as done:", ""};
                 doneArr[1] = "  " + currTask.toString();
-
                 return doneArr;
             } else {
                 throw new DukeException("I don't have that entry in the list!");
             }
         } else {
             throw new DukeException("You need to tell me what the number of the entry is!");
-        }
-    }
-
-    public void close() {
-        try {
-            writeTaskFile();
-            taskFileWr.close();
-        } catch (IOException excp) {
-            throw new DukeFatalException("Unable to write data! Some data may have been lost,");
         }
     }
 
@@ -107,6 +103,7 @@ public class TaskList {
             }
             taskArrList.add(newTask);
 
+            writeTaskFile();
             int taskCount = taskArrList.size();
             addArr[1] = "  " + taskArrList.get(taskCount - 1).toString();
             String taskCountStr = Integer.toString(taskCount) + ((taskCount == 1) ? " task" : " tasks");
@@ -177,10 +174,21 @@ public class TaskList {
         return taskArrList;
     }
 
-    private void writeTaskFile() {
+    public void writeTaskFile() { // public because there's no point having a separate close operation
+        // TODO: figure out some way of editing that doesn't involve rewriting everything each time
+        // Maybe some kind of diff file?
+
         String taskFileStr = "";
         for (int i = 0; i < taskArrList.size(); ++i) {
-            taskArrList
+            taskFileStr += taskArrList.get(i).toData() + System.lineSeparator();
+        }
+        try {
+            FileWriter taskFileWr = new FileWriter(taskFile);
+            taskFileWr.write(taskFileStr);
+            taskFileWr.close();
+        } catch (IOException excp) {
+            throw new DukeFatalException("Unable to write data! Some data may have been lost,");
+        }
     }
 
     // TODO: move this functionality to the classes
@@ -194,4 +202,3 @@ public class TaskList {
         }
     }
 }
-

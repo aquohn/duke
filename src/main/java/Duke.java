@@ -46,17 +46,23 @@ public class Duke {
         try {
             taskList = new TaskList(false);
         } catch (DukeResetException excp) {
-            char resetChar;
+            String resetStr;
             String[] errArr = {excp.getMessage(), "Do you want to reset your Duke data now,"
                 + " to continue using Duke? (y/n)"};
             say(errArr);
             while (true) { //wait for user to respond
-                resetChar = scanIn.nextLine().charAt(0);
-                if (resetChar == 'y' || resetChar == 'Y') {
-                    taskList = new TaskList(true);
-                } else if (resetChar == 'n' || resetChar == 'N') {
-                    scanIn.close();
-                    System.exit(0);
+                resetStr = scanIn.nextLine();
+                if (resetStr.length() > 0) {
+                    resetStr = resetStr.substring(0,1); //extract first char
+                    if (resetStr == "y" || resetStr == "Y") {
+                        taskList = new TaskList(true);
+                        say(new String[] {"Your data has been reset!"});
+                        break;
+                    } else if (resetStr == "n" || resetStr == "N") {
+                        scanIn.close();
+                        say(new String[] {"Exiting Duke..."});
+                        System.exit(0);
+                    }
                 }
             }
         } catch (DukeFatalException excp) {
@@ -78,7 +84,7 @@ public class Duke {
                         break;
 
                     case CMD_BYE:
-                        taskList.close();
+                        taskList.writeTaskFile();
                         scanIn.close();
                         say(byeArr);
                         System.exit(0);
