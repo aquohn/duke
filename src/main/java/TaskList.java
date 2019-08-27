@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 
 public class TaskList {
 
-    // TODO: create HashMap of (string, function) pairs for commands
+    // TODO: look into throws keyword
 
     // TSV files will have one entry per line, tabs disallowed in input
 
@@ -22,11 +22,7 @@ public class TaskList {
             if (taskFile.exists()) {
                 if (isReset) {
                     taskArrList = new ArrayList<Task>();
-                    if (taskFile.delete()) {
-                        taskFile.createNewFile();
-                    } else {
-                        throw new DukeFatalException("Unable to setup data file, try checking your permissions?"); 
-                    }
+                    writeTaskFile();
                 } else {
                     taskArrList = parseTaskFile(taskFile);
                 }
@@ -174,7 +170,7 @@ public class TaskList {
         return taskArrList;
     }
 
-    public void writeTaskFile() { // public because there's no point having a separate close operation
+    public void writeTaskFile() { // public because a separate close oepration would just call this
         // TODO: figure out some way of editing that doesn't involve rewriting everything each time
         // Maybe some kind of diff file?
 

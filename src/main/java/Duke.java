@@ -32,8 +32,6 @@ public class Duke {
         //standard messages
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
         String[] byeArr = {"Bye. Hope to see you again soon!"};
-        String[] addArr = {"Got it, I've added this task:", "", ""};
-        String[] doneArr = {"Nice! I've marked this task as done:", ""};
 
         say(hiArr);
 
@@ -54,11 +52,11 @@ public class Duke {
                 resetStr = scanIn.nextLine();
                 if (resetStr.length() > 0) {
                     resetStr = resetStr.substring(0,1); //extract first char
-                    if (resetStr == "y" || resetStr == "Y") {
+                    if (resetStr.equals("y") || resetStr.equals("Y")) {
                         taskList = new TaskList(true);
                         say(new String[] {"Your data has been reset!"});
                         break;
-                    } else if (resetStr == "n" || resetStr == "N") {
+                    } else if (resetStr.equals("n") || resetStr.equals("N")) {
                         scanIn.close();
                         say(new String[] {"Exiting Duke..."});
                         System.exit(0);
@@ -75,6 +73,7 @@ public class Duke {
         while (true) {
             Boolean isValid = true;
             inputStr = scanIn.nextLine();
+            inputStr.replace("\t", "    "); //sanitise input
             String[] argArr = inputStr.split(" ");
 
             try {
@@ -108,7 +107,7 @@ public class Duke {
                         break;
 
                     case CMD_DLINE:
-                        inputStr = inputStr.substring(CMD_TODO.length());
+                        inputStr = inputStr.substring(CMD_DLINE.length());
                         say(taskList.addTask(Deadline.class, inputStr, KW_BY));
                         break;
 

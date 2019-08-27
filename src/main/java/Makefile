@@ -1,12 +1,18 @@
-# Credits to: https://www.cs.swarthmore.edu/~newhall/unixhelp/javamakefiles.html
+DEBUG ?= 0 # set DEBUG to 0 by default
+# make DEBUG=1 to build debug build
 
 #
-# define compiler and compiler flag variables
+# define compiler, directory and compiler flag variables
 #
 
 # JFLAGS = -g # JFLAGS not set, will default to empty string
 JC = javac
-BUILDDIR = ../../../build
+ifeq ($(DEBUG), 1)
+	BUILDDIR = ../../../debug
+	JFLAGS = -g
+else
+	BUILDDIR = ../../../build
+endif
 
 _UTILS = DukeFatalException.class DukeResetException.class Task.class
 UTILS = $(patsubst %,$(BUILDDIR)/%,$(_UTILS))
@@ -31,13 +37,6 @@ $(BUILDDIR)/%.class: %.java
 $(BUILDDIR)/Duke.class: $(SYSTEMS)
 
 #
-# "make debug" to build Duke.class with these options
-#
-
-debug: JFLAGS = -g
-debug: $(BUILDDIR)/Duke.class
-
-#
 # dependency levels
 #
 
@@ -51,7 +50,7 @@ $(UTILS): %.class: $(BUILDDIR)/DukeException.class
 # ignore files
 #
 
-.PHONY: clean
+.PHONY: clean debug
 
 #
 # RM is a predefined macro in make (RM = rm -f)
