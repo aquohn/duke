@@ -67,6 +67,7 @@ public class TaskList {
     }
 
     // TODO: in major need of refactoring, try to remove reflection/generics if possible and use polymorphism instead
+    // Consider making Task an interface?
     public <T extends Task> String[] addTask(Class<T> taskClass, String inputStr, String keyword) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         String desc;
@@ -77,25 +78,32 @@ public class TaskList {
         T newTask;
 
         try {
+            // TODO: abstract string processing for arbitrary numbers of fields
             if (keyword != null) { //Task consists of two parts separated by a keyword
                 String[] splitArr = inputStr.split(keyword, 2);
 
                 if (splitArr.length < 2) {
                     throw generateInvalidTaskException(taskClass);
                 } else {
-                    Constructor taskConst = taskClass.getConstructor(twoStrings);
-                    desc = splitArr[0];
+                    desc = splitArr[0].strip();
+                    splitArr[1] = splitArr[1].strip();
                     if (desc.length() == 0) {
                         throw new DukeException("The task description cannot be empty!");
+                    } else if (splitArr[1].length() == 0) {
+                        throw generateInvalidTaskException(taskClass);
                     }
+                    
+                    Constructor taskConst = taskClass.getConstructor(twoStrings);
                     newTask = (T) taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
                 } 
             } else {
-                Constructor taskConst = taskClass.getConstructor(oneString);
-                if (inputStr.length() == 0) {
+                desc = inputStr.strip();
+                if (desc.length() == 0) {
                     throw new DukeException("The task description cannot be empty!");
                 }
-                newTask = (T) taskClass.cast(taskConst.newInstance(inputStr));
+                
+                Constructor taskConst = taskClass.getConstructor(oneString);
+                newTask = (T) taskClass.cast(taskConst.newInstance(desc));
             }
             taskArrList.add(newTask);
 
