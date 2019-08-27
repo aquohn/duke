@@ -93,8 +93,8 @@ public class TaskList {
                         throw generateInvalidTaskException(taskClass);
                     }
                     
-                    Constructor taskConst = taskClass.getConstructor(twoStrings);
-                    newTask = (T) taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
+                    Constructor<T> taskConst = taskClass.getConstructor(twoStrings);
+                    newTask = taskClass.cast(taskConst.newInstance(desc, splitArr[1]));
                 } 
             } else {
                 desc = inputStr.strip();
@@ -102,8 +102,8 @@ public class TaskList {
                     throw new DukeException("The task description cannot be empty!");
                 }
                 
-                Constructor taskConst = taskClass.getConstructor(oneString);
-                newTask = (T) taskClass.cast(taskConst.newInstance(desc));
+                Constructor<T> taskConst = taskClass.getConstructor(oneString);
+                newTask = taskClass.cast(taskConst.newInstance(desc));
             }
             taskArrList.add(newTask);
 
@@ -130,15 +130,16 @@ public class TaskList {
         try {
             Scanner taskScanner = new Scanner(taskFile);
             while (taskScanner.hasNextLine()) {
-                String[] taskArr = taskScanner.nextLine().split("\t");
+                String taskLine = taskScanner.nextLine();
+                String[] taskArr = taskLine.split("\t");
                 String taskType = taskArr[0];
                 boolean isDone;
 
                 //check if task is done
                 String doneStr = taskArr[1].strip();
-                if (doneStr == "1") {
+                if (doneStr.equals("1")) {
                     isDone = true;
-                } else if (doneStr == "0") {
+                } else if (doneStr.equals("0")) {
                     isDone = false;
                 } else {
                     throw new DukeResetException(corrupt);
@@ -146,19 +147,19 @@ public class TaskList {
 
                 //add tasks to taskArrList
                 // TODO: look into ways to compact this
-                if (taskType == "T") {
+                if (taskType.equals("T")) {
                     ToDo currToDo = new ToDo(taskArr[2]);
                     if (isDone) {
                         currToDo.markDone();
                     }
                     taskArrList.add(currToDo);
-                } else if (taskType == "E") {
+                } else if (taskType.equals("E")) {
                     Event currEvent = new Event(taskArr[2], taskArr[3]);
                     if (isDone) {
                         currEvent.markDone();
                     }
                     taskArrList.add(currEvent);
-                } else if (taskType == "D") {
+                } else if (taskType.equals("D")) {
                     Deadline currDeadline = new Deadline(taskArr[2], taskArr[3]);
                     if (isDone) {
                         currDeadline.markDone();
