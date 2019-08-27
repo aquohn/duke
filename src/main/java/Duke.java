@@ -25,12 +25,14 @@ public class Duke {
 
     public static void main(String[] args) {
         //print welcome message
-        String logo = " ____        _        \n"
-            + "|  _ \\ _   _| | _____ \n"
-            + "| | | | | | | |/ / _ \\\n"
-            + "| |_| | |_| |   <  __/\n"
-            + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("\nHello from\n" + logo);
+        String logoSpace = "                                  ";
+        String titleSpace = "                                        ";
+        String logo = logoSpace + " ____        _        \n"
+            + logoSpace + "|  _ \\ _   _| | _____ \n"
+            + logoSpace + "| | | | | | | |/ / _ \\\n"
+            + logoSpace + "| |_| | |_| |   <  __/\n"
+            + logoSpace + "|____/ \\__,_|_|\\_\\___|\n";
+        System.out.println("\n" + titleSpace + "Hello from\n" + logo);
 
         //standard messages
         String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
@@ -130,7 +132,7 @@ public class Duke {
 
     // for Duke to say any arbitrary message
     private static void say(String[] msgArr) {
-        String line = "    ____________________________________________________________";
+        String line = "    ________________________________________________________________________________";
         String indent = "    ";
         System.out.println(line);
         for (int i = 0; i < msgArr.length; ++i) {
