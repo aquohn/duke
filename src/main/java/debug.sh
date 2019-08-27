@@ -1,2 +1,3 @@
 make DEBUG=1
-jdb -classpath ../../../debug -sourcepath . Duke
+cd ../../../debug
+jdb -classpath . -sourcepath ../src/main/java Duke
