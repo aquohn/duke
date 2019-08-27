@@ -1,19 +1,16 @@
-public class Deadline extends Task {
+import java.time.LocalDateTime;
+import java.time.DateTimeException;
 
-    private String by;
+public class Deadline extends TimedTask {
 
-    public Deadline(String _name, String _by) {
-        super(_name);
+    public Deadline(String _name, LocalDateTime _by) {
+        super(_name, _by);
         type = 'D';
-        by = _by;
-    }
-
-    public String toString() {
-        return "[" + type + "]" + super.toString() + " (by: " + by + ")";
     }
 
     @Override
-    public String toData() {
-        return super.toData() + "\t" + by;
+    public String toString() throws DateTimeException {
+        return "[" + type + "]" + super.toString() + " (by: " + getTime() + ")";
     }
+
 }

@@ -1,20 +1,15 @@
-public class Event extends Task {
+import java.time.LocalDateTime;
+import java.time.DateTimeException;
 
-    private String at;
+public class Event extends TimedTask {
 
-    public Event(String _name, String _at) {
-        super(_name);
+    public Event(String _name, LocalDateTime _at) {
+        super(_name, _at);
         type = 'E';
-        at = _at;
     }
 
     @Override
-    public String toString() {
-        return "[" + type + "]" + super.toString() + " (at: " + at + ")";
-    }
-
-    @Override
-    public String toData() {
-        return super.toData() + "\t" + at;
+    public String toString() throws DateTimeException {
+        return "[" + type + "]" + super.toString() + " (at: " + getTime() + ")";
     }
 }

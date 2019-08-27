@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.lang.reflect.Constructor;
 import java.io.File;
 import java.io.FileWriter;
+import java.time.DateTimeException;
 
 public class Duke {
 
@@ -19,6 +20,8 @@ public class Duke {
 
     public static final String KW_AT = "/at";
     public static final String KW_BY = "/by";
+
+    // TODO: add help command
 
     public static void main(String[] args) {
         //print welcome message
@@ -52,11 +55,11 @@ public class Duke {
                 resetStr = scanIn.nextLine();
                 if (resetStr.length() > 0) {
                     resetStr = resetStr.substring(0,1); //extract first char
-                    if (resetStr.equals("y") || resetStr.equals("Y")) {
+                    if (resetStr.equalsIgnoreCase("y")) {
                         taskList = new TaskList(true);
                         say(new String[] {"Your data has been reset!"});
                         break;
-                    } else if (resetStr.equals("n") || resetStr.equals("N")) {
+                    } else if (resetStr.equalsIgnoreCase("n")) {
                         scanIn.close();
                         say(new String[] {"Exiting Duke..."});
                         System.exit(0);
@@ -133,7 +136,6 @@ public class Duke {
         for (int i = 0; i < msgArr.length; ++i) {
             System.out.println(indent + msgArr[i]);
         }
-        System.out.println(line);
-        System.out.println("");
+        System.out.println(line + System.lineSeparator());
     }
 }
