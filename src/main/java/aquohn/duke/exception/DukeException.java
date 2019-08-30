@@ -1,4 +1,4 @@
-package aquohn.duke;
+package aquohn.duke.exception;
 
 public class DukeException extends RuntimeException {
 

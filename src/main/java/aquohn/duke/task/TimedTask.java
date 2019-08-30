@@ -1,4 +1,4 @@
-package aquohn.duke;
+package aquohn.duke.task;
 
 import java.time.LocalDateTime;
 import java.time.DateTimeException;

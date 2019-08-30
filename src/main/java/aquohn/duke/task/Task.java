@@ -1,4 +1,4 @@
-package aquohn.duke;
+package aquohn.duke.task;
 
 public class Task {
 

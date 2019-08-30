@@ -1,8 +1,8 @@
-package aquohn.duke;
+package aquohn.duke.task;
 
-public class ToDo extends Task {
+public class ToDoTask extends Task {
 
-    public ToDo(String _name) {
+    public ToDoTask(String _name) {
         super(_name);
         type = 'T';
     }

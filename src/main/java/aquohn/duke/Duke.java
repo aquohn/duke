@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.DateTimeException;
 
+import aquohn.duke.exception.*;
+import aquohn.duke.task.*;
+
 public class Duke {
 
     // TODO: create HashMap of (string, function) pairs for commands
@@ -105,17 +108,17 @@ public class Duke {
 
                     case CMD_TODO:
                         inputStr = inputStr.substring(CMD_TODO.length());
-                        say(taskList.addTask(ToDo.class, inputStr, null));
+                        say(taskList.addTask(ToDoTask.class, inputStr, null));
                         break;
 
                     case CMD_EVENT:
                         inputStr = inputStr.substring(CMD_EVENT.length());
-                        say(taskList.addTask(Event.class, inputStr, KW_AT));
+                        say(taskList.addTask(EventTaskTask.class, inputStr, KW_AT));
                         break;
 
                     case CMD_DLINE:
                         inputStr = inputStr.substring(CMD_DLINE.length());
-                        say(taskList.addTask(Deadline.class, inputStr, KW_BY));
+                        say(taskList.addTask(DeadlineTask.class, inputStr, KW_BY));
                         break;
 
                     default:

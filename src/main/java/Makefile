@@ -17,50 +17,32 @@ else
 	BUILDDIR = ../../../build
 endif
 
-_UTILS = DukeFatalException.class DukeResetException.class Task.class
-UTILS = $(patsubst %,$(CLASSDIR)/%,$(_UTILS))
+SRCDIR = .
 
-_TASKS = ToDo.class Event.class Deadline.class
-TASKS = $(patsubst %,$(CLASSDIR)/%,$(_TASKS))
+#
+# find all.javas, list of source files
+#
 
-_TIMETASKS = Event.class Deadline.class
-TIMETASKS = $(patsubst %,$(CLASSDIR)/%,$(_TIMETASKS))
-
-_SYSTEMS = TaskList.class
-SYSTEMS = $(patsubst %,$(CLASSDIR)/%,$(_SYSTEMS))
+# all_javas - Temp file for holding source file list
+all_javas := all.javas
 
 #
 # define default compilation behaviour for class files
 #
 
-$(CLASSDIR)/%.class: %.java
-	$(JC) $(JFLAGS) -d $(BUILDDIR) -cp $(BUILDDIR) $<
+compile: all.javas
+	$(JC) $(JFLAGS) -d $(BUILDDIR) -cp $(BUILDDIR) @$<
 
-#
-# default make target, will build dependencies on right of colon if needed
-#
-
-$(CLASSDIR)/Duke.class: $(SYSTEMS)
-
-#
-# dependency levels
-#
-
-$(SYSTEMS): %.class: $(TASKS) $(UTILS)
-
-$(CLASSDIR)/TimedTask.class: $(UTILS)
-
-$(TASKS): %.class: $(CLASSDIR)/Task.class
-
-$(TIMETASKS): %.class: $(CLASSDIR)/TimedTask.class
-
-$(UTILS): %.class: $(CLASSDIR)/DukeException.class
+# all_javas - Gather source file list
+#.INTERMEDIATE: $(all_javas)
+#$(all_javas):
+#	$(FIND) $(SOURCE_DIR) -name '*.java' > $@
 
 #
 # ignore files
 #
 
-.PHONY: clean debug
+.PHONY: clean debug compile
 
 #
 # RM is a predefined macro in make (RM = rm -f)
