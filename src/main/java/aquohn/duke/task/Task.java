@@ -1,18 +1,20 @@
 package aquohn.duke.task;
 
-public class Task {
+import aquohn.duke.exception.DukeException;
 
-    private String name;
+class Task {
+
+    final private String name;
     private Boolean isDone;
-    protected char type;
+    char type;
 
-    public Task(String _name) {
+    Task(String _name) {
         name = _name;
         isDone = false;
         type = 'K';
     }
 
-    public void markDone() {
+    void markDone() {
         if (isDone) {
             throw new DukeException("You already did that task!");
         } else {

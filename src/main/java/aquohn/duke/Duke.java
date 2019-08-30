@@ -1,14 +1,14 @@
 package aquohn.duke;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.lang.reflect.Constructor;
-import java.io.File;
-import java.io.FileWriter;
-import java.time.DateTimeException;
+import aquohn.duke.exception.DukeException;
+import aquohn.duke.exception.DukeFatalException;
+import aquohn.duke.exception.DukeResetException;
+import aquohn.duke.task.DeadlineTask;
+import aquohn.duke.task.EventTask;
+import aquohn.duke.task.TaskList;
+import aquohn.duke.task.ToDoTask;
 
-import aquohn.duke.exception.*;
-import aquohn.duke.task.*;
+import java.util.Scanner;
 
 public class Duke {
 
@@ -47,8 +47,6 @@ public class Duke {
 
         TaskList taskList; // TODO: convert this into a class member, and make Duke non-static
         String inputStr;
-        String[] sayArr = new String[1];
-        String[] splitArr;
         Scanner scanIn = new Scanner(System.in);
 
         try {
@@ -81,9 +79,8 @@ public class Duke {
         }
 
         while (true) {
-            Boolean isValid = true;
             inputStr = scanIn.nextLine();
-            inputStr.replace("\t", "    "); //sanitise input
+            inputStr = inputStr.replace("\t", "    "); //sanitise input
             String[] argArr = inputStr.split(" ");
 
             try {
@@ -113,7 +110,7 @@ public class Duke {
 
                     case CMD_EVENT:
                         inputStr = inputStr.substring(CMD_EVENT.length());
-                        say(taskList.addTask(EventTaskTask.class, inputStr, KW_AT));
+                        say(taskList.addTask(EventTask.class, inputStr, KW_AT));
                         break;
 
                     case CMD_DLINE:
