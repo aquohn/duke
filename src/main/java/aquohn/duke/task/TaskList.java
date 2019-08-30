@@ -1,4 +1,4 @@
-package aquohn.duke;
+package aquohn.duke.task;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
+
+import aquohn.duke.exception;
 
 public class TaskList {
 
@@ -158,25 +160,25 @@ public class TaskList {
                 //add tasks to taskArrList
                 // TODO: look into ways to compact this, maybe a factory, switching factory inputs based on taskType?
                 if (taskType.equals("T")) {
-                    ToDo currToDo = new ToDo(taskArr[2]);
+                    ToDoTask currToDoTask = new ToDoTask(taskArr[2]);
                     if (isDone) {
-                        currToDo.markDone();
+                        currToDoTask.markDone();
                     }
-                    taskArrList.add(currToDo);
+                    taskArrList.add(currToDoTask);
                 } else if (taskType.equals("E")) {
                     datetime = LocalDateTime.parse(taskArr[3], TimedTask.PAT_DATETIME);
-                    Event currEvent = new Event(taskArr[2], datetime);
+                    EventTask currEventTask = new EventTask(taskArr[2], datetime);
                     if (isDone) {
-                        currEvent.markDone();
+                        currEventTask.markDone();
                     }
-                    taskArrList.add(currEvent);
+                    taskArrList.add(currEventTask);
                 } else if (taskType.equals("D")) {
                     datetime = LocalDateTime.parse(taskArr[3], TimedTask.PAT_DATETIME);
-                    Deadline currDeadline = new Deadline(taskArr[2], datetime);
+                    DeadlineTask currDeadlineTask = new DeadlineTask(taskArr[2], datetime);
                     if (isDone) {
-                        currDeadline.markDone();
+                        currDeadlineTask.markDone();
                     }
-                    taskArrList.add(currDeadline);
+                    taskArrList.add(currDeadlineTask);
                 } else {
                     throw new DukeResetException(corrupt);
                 }
@@ -212,9 +214,9 @@ public class TaskList {
 
     // TODO: move this functionality to the classes
     private DukeException generateInvalidTaskException(Class taskClass) {
-        if (taskClass == Event.class) {
+        if (taskClass == EventTask.class) {
             return new DukeException("Invalid event! I need to know the date and time that it is /at.");
-        } else if (taskClass == Deadline.class) {
+        } else if (taskClass == DeadlineTask.class) {
             return new DukeException("Invalid deadline I need to know the date and time that it is due /by.");
         } else {
             return new DukeException("I don't recognise that type of class!");
