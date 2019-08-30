@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 make
 cd ../../../build
-java Duke
+java aquohn.duke.Duke

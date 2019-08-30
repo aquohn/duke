@@ -1,3 +1,5 @@
+package aquohn.duke;
+
 public class DukeFatalException extends DukeException {
 
    public DukeFatalException(String msg) {

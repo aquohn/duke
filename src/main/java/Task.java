@@ -1,3 +1,5 @@
+package aquohn.duke;
+
 public class Task {
 
     private String name;
