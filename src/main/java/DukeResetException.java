@@ -1,3 +1,5 @@
+package aquohn.duke;
+
 public class DukeResetException extends DukeException {
 
    public DukeResetException(String msg) {
