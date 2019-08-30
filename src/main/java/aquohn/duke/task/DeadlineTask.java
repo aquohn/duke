@@ -1,11 +1,11 @@
 package aquohn.duke.task;
 
-import java.time.LocalDateTime;
 import java.time.DateTimeException;
+import java.time.LocalDateTime;
 
 public class DeadlineTask extends TimedTask {
 
-    public DeadlineTask(String _name, LocalDateTime _by) {
+    DeadlineTask(String _name, LocalDateTime _by) {
         super(_name, _by);
         type = 'D';
     }
