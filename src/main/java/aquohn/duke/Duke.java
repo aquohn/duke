@@ -29,22 +29,6 @@ public class Duke {
     // TODO: add help command
 
     public static void main(String[] args) {
-        //print welcome message
-        String logoSpace = "                                  ";
-        String titleSpace = "                                        ";
-        String logo = logoSpace + " ____        _        \n"
-            + logoSpace + "|  _ \\ _   _| | _____ \n"
-            + logoSpace + "| | | | | | | |/ / _ \\\n"
-            + logoSpace + "| |_| | |_| |   <  __/\n"
-            + logoSpace + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("\n" + titleSpace + "Hello from\n" + logo);
-
-        //standard messages
-        String[] hiArr = {"Hello, I'm Duke!", "What can I do for you?"};
-        String[] byeArr = {"Bye. Hope to see you again soon!"};
-
-        say(hiArr);
-
         TaskList taskList; // TODO: convert this into a class member, and make Duke non-static
         String inputStr;
         Scanner scanIn = new Scanner(System.in);

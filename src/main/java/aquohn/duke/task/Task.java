@@ -2,11 +2,11 @@ package aquohn.duke.task;
 
 import aquohn.duke.exception.DukeException;
 
-class Task {
+abstract class Task {
 
-    final private String name;
+    private String name;
     private Boolean isDone;
-    char type;
+    protected char type;
 
     Task(String _name) {
         name = _name;
@@ -22,6 +22,15 @@ class Task {
         }
     }
 
+    public void setName(String _name) {
+        name = _name;
+    }
+
+    public char getType() {
+        return type;
+    }
+
+    @Override
     public String toString() {
         return "[" + (isDone ? "\u2713" : "\u2718") + "] " + name; //ternary operator returns tick or X
     }

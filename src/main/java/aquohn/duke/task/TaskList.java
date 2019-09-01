@@ -16,15 +16,13 @@ import java.util.Scanner;
 
 public class TaskList {
 
-    // TODO: look into throws keyword
-
     // TSV files will have one entry per line, tabs disallowed in input
 
     private ArrayList<Task> taskArrList;
     final private File taskFile;
 
     public TaskList(boolean isReset) {
-        taskFile = new File("../data/tasks.tsv");
+        taskFile = new File("data/tasks.tsv");
         try {
             if (taskFile.exists()) {
                 if (isReset) {
@@ -76,11 +74,9 @@ public class TaskList {
     }
 
     // TODO: in major need of refactoring, try to remove reflection/generics if possible and use polymorphism instead
-    // Consider making Task an interface?
     public <T extends Task> String[] addTask(Class<T> taskClass, String inputStr, String keyword) {
         String[] addArr = {"Got it, I've added this task:", "", ""};
         String desc;
-
         T newTask;
 
         try {
@@ -198,7 +194,7 @@ public class TaskList {
         return taskArrList;
     }
 
-    public void writeTaskFile() { // public because a separate close oepration would just call this
+    public void writeTaskFile() { // public because a separate close operation would just call this
         // TODO: figure out some way of editing that doesn't involve rewriting everything each time
         // Maybe some kind of diff file?
 
