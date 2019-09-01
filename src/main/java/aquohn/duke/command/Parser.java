@@ -1,7 +1,5 @@
 package aquohn.duke.command;
 
-import java.util.HashMap;
-
 public class Parser {
 
    public Parser() {
@@ -14,7 +12,7 @@ public class Parser {
       String cmdStr = (firstSpaceIdx == -1) ? inputStr : inputStr.substring(firstSpaceIdx);
 
       switch(cmdStr) {
-      case CMD.BYE:
+      case Command.BYE:
       }
    }
 }
