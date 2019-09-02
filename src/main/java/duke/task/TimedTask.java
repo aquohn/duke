@@ -1,17 +1,17 @@
-package aquohn.duke.task;
+package duke.task;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TimedTask extends Task {
+public abstract class TimedTask extends Task {
 
     private static final DateTimeFormatter PAT_DATETIME = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private static final DateTimeFormatter PAT_DATETIME_DISPLAY = DateTimeFormatter.ofPattern("eee, d MMM yyyy hh:mm a");
 
     protected LocalDateTime time;
 
-    TimedTask(String _name, LocalDateTime _time) {
+    public TimedTask(String _name, LocalDateTime _time) {
         super(_name);
         time = _time;
     }
@@ -25,7 +25,7 @@ public class TimedTask extends Task {
         return time.format(PAT_DATETIME_DISPLAY);
     }
 
-    public String setTime(LocalDateTime _time) {
+    public void setTime(LocalDateTime _time) {
         time = _time;
     }
 

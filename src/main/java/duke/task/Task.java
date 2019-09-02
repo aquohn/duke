@@ -1,6 +1,6 @@
-package aquohn.duke.task;
+package duke.task;
 
-import aquohn.duke.exception.DukeException;
+import duke.exception.DukeException;
 
 abstract class Task {
 
@@ -8,13 +8,13 @@ abstract class Task {
     private Boolean isDone;
     protected char type;
 
-    Task(String _name) {
+    public Task(String _name) {
         name = _name;
         isDone = false;
         type = 'K';
     }
 
-    void markDone() {
+    void markDone() throws DukeException {
         if (isDone) {
             throw new DukeException("You already did that task!");
         } else {

@@ -1,11 +1,11 @@
-package aquohn.duke.task;
+package duke.task;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
 public class DeadlineTask extends TimedTask {
 
-    DeadlineTask(String _name, LocalDateTime _by) {
+    public DeadlineTask(String _name, LocalDateTime _by) {
         super(_name, _by);
         type = 'D';
     }
@@ -14,5 +14,4 @@ public class DeadlineTask extends TimedTask {
     public String toString() throws DateTimeException {
         return "[" + type + "]" + super.toString() + " (by: " + getTime() + ")";
     }
-
 }

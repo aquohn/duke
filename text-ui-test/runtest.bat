@@ -9,7 +9,7 @@ if exist test.out del test.out
 if exist "../data/tasks.tsv" del "../data/tasks.tsv"
 
 REM compile the code into the bin folder
-javac  -cp ..\src -Xlint:none -d ..\bin ..\src\main\java\Duke.java
+javac  -cp ..\bin -Xlint:none -d ..\bin ..\src\main\java\Duke.java
 IF ERRORLEVEL 1 (
    echo ********** BUILD FAILURE **********
     exit /b 1
