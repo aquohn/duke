@@ -1,8 +1,8 @@
-package aquohn.duke.task;
+package duke.task;
 
-import aquohn.duke.exception.DukeException;
-import aquohn.duke.exception.DukeFatalException;
-import aquohn.duke.exception.DukeResetException;
+import duke.exception.DukeException;
+import duke.exception.DukeFatalException;
+import duke.exception.DukeResetException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,7 +42,7 @@ public class TaskList {
         }
     }
 
-    public String[] listTasks() {
+    public String[] listTasks() throws DukeException {
         int taskCount = taskArrList.size();
         if (taskCount == 0) {
             throw new DukeException("You don't have any tasks yet!");
@@ -55,7 +55,15 @@ public class TaskList {
         return taskArr;
     }
 
-    public String[] markDone(String idxStr) {
+    public String getFileStr() {
+        StringBuilder taskFileBuilder = new StringBuilder();
+        for (int i = 0; i < taskArrList.size(); ++i) {
+            taskFileBuilder.append(taskArrList.get(i).toData()).append(System.lineSeparator());
+        }
+        return taskFileBuilder.toString();
+    }
+
+    public String[] markDone(String idxStr) throws DukeException {
         if (idxStr.matches("\\d+")) { //if second arg is an integer
             int idx = Integer.parseInt(idxStr) - 1;
             if (idx < taskArrList.size()) {

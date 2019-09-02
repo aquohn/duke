@@ -1,16 +1,16 @@
-package aquohn.duke;
+package duke;
 
-import aquohn.duke.exception.DukeException;
-import aquohn.duke.exception.DukeFatalException;
-import aquohn.duke.exception.DukeResetException;
-import aquohn.duke.task.DeadlineTask;
-import aquohn.duke.task.EventTask;
-import aquohn.duke.task.TaskList;
-import aquohn.duke.task.ToDoTask;
+import duke.exception.DukeException;
+import duke.exception.DukeFatalException;
+import duke.exception.DukeResetException;
+import duke.task.DeadlineTask;
+import duke.task.EventTask;
+import duke.task.TaskList;
+import duke.task.ToDoTask;
 
 import java.util.Scanner;
 
-public class Duke {
+public class OldDuke {
 
     // TODO: create HashMap of (string, function) pairs for commands
 
@@ -64,7 +64,7 @@ public class Duke {
 
         while (true) {
             inputStr = scanIn.nextLine();
-            inputStr = inputStr.replace("\t", "    "); //sanitise input
+            inputStr = inputStr.replaceAll("\t", "    "); //sanitise input
             String[] argArr = inputStr.split(" ");
 
             try {

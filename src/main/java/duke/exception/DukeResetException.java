@@ -1,4 +1,4 @@
-package aquohn.duke.exception;
+package duke.exception;
 
 public class DukeResetException extends DukeException {
 
