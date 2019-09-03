@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
-    private static String line = "    ________________________________________________________________________________";
-    private static String indentline = "    " + System.lineSeparator();
     private static final String KW_AT = "/at";
     private static final String KW_BY = "/by";
     private Parser parser;
@@ -22,7 +20,7 @@ public class Ui {
 
     public Ui() {
         parser = new Parser();
-        Scanner scanIn = new Scanner(System.in);
+        scanIn = new Scanner(System.in);
     }
 
     public void printWelcome() {
@@ -49,6 +47,8 @@ public class Ui {
     }
 
     public void print(String msg) {
+        String line = "    ________________________________________________________________________________";
+        String indentline = "    " + System.lineSeparator();
         System.out.println(line);
         msg = msg.replaceAll("(\\r\\n|\\r|\\n)", indentline);
         System.out.println(msg);
@@ -68,6 +68,4 @@ public class Ui {
         print(excp.getMessage() + System.lineSeparator() + "Do you want to reset your Duke data now,"
                 + " to continue using Duke? (y/n)");
     }
-
-
 }

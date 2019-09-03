@@ -25,7 +25,7 @@ public class Parser {
       inputStr = inputStr.substring(cmdStr.length() + 2).strip();
       //trim command and first space after it from input if needed
       // TODO: if possible, disambiguate using functions
-      if (cmd instanceof ArgCommand) {
+      if (ArgCommand.class.isInstance(cmd)) {
          // stripping not required otherwise
          inputStr = inputStr.substring(cmdStr.length() + 2).strip();
       }

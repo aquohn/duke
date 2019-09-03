@@ -44,10 +44,11 @@ public class Storage {
    }
 
    public ArrayList<Task> parseTaskFile() throws DukeResetException, DukeFatalException {
-      if (!taskFile.exists()) {
-         return null;
-      }
       ArrayList<Task> taskArrList = new ArrayList<Task>();
+      if (taskFile.length() == 0) { // file is empty
+         return taskArrList;
+      }
+
       //message for when data corruption is detected in the file
       String corrupt = "Data file has been corrupted!";
 
@@ -71,7 +72,7 @@ public class Storage {
             }
 
             //add tasks to taskArrList
-            // TODO: look into ways to compact this, maybe a factory, switching factory inputs based on taskType?
+            // TODO: use hashmap of enums, each with a taskFromStr function returning type Task
             switch (taskType) {
             case "T":
                ToDoTask currToDoTask = new ToDoTask(taskArr[2]);
