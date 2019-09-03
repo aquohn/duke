@@ -1,19 +1,10 @@
 package duke.task;
 
-import duke.command.Ui;
 import duke.exception.DukeException;
 import duke.exception.DukeFatalException;
 import duke.exception.DukeResetException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TaskList {
 
@@ -22,8 +13,7 @@ public class TaskList {
     private ArrayList<Task> taskArrList;
 
     public TaskList(Storage storage) throws DukeResetException, DukeFatalException {
-        ArrayList<Task> fileTaskArrList = storage.parseTaskFile();
-        taskArrList = fileTaskArrList;
+        taskArrList = storage.parseTaskFile();
     }
 
     public TaskList() {
@@ -68,10 +58,9 @@ public class TaskList {
 
     public String addTask(Task newTask) {
             String addStr = "Got it, I've added this task:" + System.lineSeparator()
-                    + newTask.toString() + System.lineSeparator();
+                    + "  " + newTask.toString() + System.lineSeparator();
             taskArrList.add(newTask);
             int taskCount = taskArrList.size();
-            addStr += "  " + taskArrList.get(taskCount - 1).toString() + System.lineSeparator();
             String taskCountStr = taskCount + ((taskCount == 1) ? " task" : " tasks");
             addStr += "Now you have " + taskCountStr + " in the list.";
             return addStr;

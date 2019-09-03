@@ -4,8 +4,8 @@ import duke.DukeContext;
 import duke.exception.DukeException;
 
 public abstract class ArgCommand extends Command {
-    protected String arg;
-    protected String emptyArgMsg;
+    String arg;
+    String emptyArgMsg;
 
     public void parse(String inputStr) throws DukeException {
         arg = inputStr;

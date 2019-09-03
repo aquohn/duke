@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 
 public abstract class NewTimedTaskCommand extends MultiArgCommand {
 
-    protected LocalDateTime datetime;
+    LocalDateTime datetime;
 
     @Override
     public void parse(String inputStr) throws DukeException {

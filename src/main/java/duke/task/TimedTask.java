@@ -9,9 +9,9 @@ public abstract class TimedTask extends Task {
     private static final DateTimeFormatter PAT_DATETIME = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
     private static final DateTimeFormatter PAT_DATETIME_DISPLAY = DateTimeFormatter.ofPattern("eee, d MMM yyyy hh:mm a");
 
-    protected LocalDateTime time;
+    private LocalDateTime time;
 
-    public TimedTask(String _name, LocalDateTime _time) {
+    TimedTask(String _name, LocalDateTime _time) {
         super(_name);
         time = _time;
     }
@@ -21,7 +21,7 @@ public abstract class TimedTask extends Task {
         return super.toData() + "\t" + time.format(PAT_DATETIME);
     }
 
-    protected String getTime() throws DateTimeException {
+    String getTime() throws DateTimeException {
         return time.format(PAT_DATETIME_DISPLAY);
     }
 
@@ -33,7 +33,9 @@ public abstract class TimedTask extends Task {
         return PAT_DATETIME;
     }
 
-    public static DateTimeFormatter getDisplayFormatter() {
-        return PAT_DATETIME_DISPLAY;
-    }
+// --Commented out by Inspection START (03/09/2019 11:57):
+//    public static DateTimeFormatter getDisplayFormatter() {
+//        return PAT_DATETIME_DISPLAY;
+//    }
+// --Commented out by Inspection STOP (03/09/2019 11:57)
 }
