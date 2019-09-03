@@ -83,7 +83,7 @@ public class TaskList {
     public String find(String searchTerm) {
         int i = 1;
         StringBuilder searchBuilder = new StringBuilder();
-        searchBuilder.append("Here are the matching tasks in your list:");
+        searchBuilder.append("Here are the tasks that contain '").append(searchTerm).append("':");
         for (Task task : taskArrList) {
             if (task.getName().contains(searchTerm)) {
                searchBuilder.append(System.lineSeparator()).append(i + ".").append(task.toString());

@@ -2,6 +2,8 @@ git checkout
 
 todo
 todo Hello World
+find
+find u
 event
 event tomorrow
 event /at tomorrow
@@ -12,6 +14,8 @@ deadline Wednesday
 deadline /by Wednesday
 deadline submission /by Wednesday
 deadline submission /by 02/09/2019 1000
+find u
+delete 1
 list
 done 1
 list
