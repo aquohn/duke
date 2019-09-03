@@ -35,6 +35,11 @@ public enum CMD {
         public Command getCommand() {
             return new DeleteCommand();
         }
+    },
+    FIND("find") {
+        public Command getCommand() {
+            return new FindCommand();
+        }
     };
 
     private final String cmdStr;

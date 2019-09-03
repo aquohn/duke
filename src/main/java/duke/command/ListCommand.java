@@ -7,6 +7,7 @@ public class ListCommand extends Command {
 
     @Override
     public void execute(DukeContext ctx) throws DukeException {
-        ctx.ui.print(String.join(System.lineSeparator(), ctx.taskList.listTasks()));
+        String listStr = "Here are the tasks in your list:" + System.lineSeparator();
+        ctx.ui.print(listStr + String.join(System.lineSeparator(), ctx.taskList.listTasks()));
     }
 }
