@@ -5,7 +5,6 @@ if not exist ..\bin mkdir ..\bin
 if not exist ..\data mkdir ..\data
 
 REM delete output from previous run
-if exist test.out del test.out
 if exist "../data/tasks.tsv" del "../data/tasks.tsv"
 
 REM find all Java files
@@ -31,16 +30,21 @@ cd ..
 
 REM run the program, feed commands from input.txt file and redirect the output
 REM to test.out
-java -classpath bin\production\duke duke/Duke < text-ui-test\Level-8.in > text-ui-test\test.out
+java -classpath bin\production\duke duke/Duke < text-ui-test\input.txt > text-ui-test\ACTUAL.txt
 
 REM test recovery of corrupted file
 echo "file corrupted!" > data/tasks.tsv
-java -classpath bin\production\duke duke/Duke < text-ui-test\n >> text-ui-test\test.out
+echo n > text-ui-test\n
+java -classpath bin\production\duke duke/Duke < text-ui-test\n >> text-ui-test\ACTUAL.txt
+del text-ui-test\n
 
 REM test deletion of corrupted file
 echo "file corrupted!" > data/tasks.tsv
-java -classpath bin\production\duke duke/Duke < text-ui-test\ybye >> text-ui-test\test.out
+echo y > text-ui-test\ybye
+echo bye >> text-ui-test\ybye
+java -classpath bin\production\duke duke/Duke < text-ui-test\ybye >> text-ui-test\ACTUAL.txt
+del text-ui-test\ybye
 
 REM compare the output to the expected output
 cd text-ui-test
-FC Level-8.out test.out
+FC ACTUAL.txt EXPECTED.txt
