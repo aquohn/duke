@@ -30,6 +30,11 @@ public enum CMD {
         public Command getCommand() {
             return new NewDeadlineCommand();
         }
+    },
+    DEL("delete") {
+        public Command getCommand() {
+            return new DeleteCommand();
+        }
     };
 
     private final String cmdStr;

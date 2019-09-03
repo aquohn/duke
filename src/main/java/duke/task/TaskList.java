@@ -42,12 +42,30 @@ public class TaskList {
     }
 
     public String markDone(String idxStr) throws DukeException {
+        Task currTask = taskArrList.get(getTaskIdx(idxStr));
+        currTask.markDone();
+        return currTask.toString();
+    }
+
+    public String addTask(Task newTask) {
+        String addStr = "Got it, I've added this task:" + System.lineSeparator()
+                + "  " + newTask.toString() + System.lineSeparator();
+        taskArrList.add(newTask);
+        return addStr + getTaskCountStr();
+    }
+
+    public String deleteTask(String idxStr) throws DukeException {
+        int idx = getTaskIdx(idxStr);
+        String delString = taskArrList.get(idx).toString();
+        taskArrList.remove(idx);
+        return delString + System.lineSeparator() + getTaskCountStr();
+    }
+
+    private int getTaskIdx(String idxStr) throws DukeException {
         if (idxStr.matches("\\d+")) { //if second arg is an integer
             int idx = Integer.parseInt(idxStr) - 1;
             if (idx < taskArrList.size()) {
-                Task currTask = taskArrList.get(idx);
-                currTask.markDone();
-                return currTask.toString();
+                return idx;
             } else {
                 throw new DukeException("I don't have that entry in the list!");
             }
@@ -56,13 +74,9 @@ public class TaskList {
         }
     }
 
-    public String addTask(Task newTask) {
-            String addStr = "Got it, I've added this task:" + System.lineSeparator()
-                    + "  " + newTask.toString() + System.lineSeparator();
-            taskArrList.add(newTask);
-            int taskCount = taskArrList.size();
-            String taskCountStr = taskCount + ((taskCount == 1) ? " task" : " tasks");
-            addStr += "Now you have " + taskCountStr + " in the list.";
-            return addStr;
+    private String getTaskCountStr() {
+        int taskCount = taskArrList.size();
+        String taskCountStr = taskCount + ((taskCount == 1) ? " task" : " tasks");
+        return "Now you have " + taskCountStr + " in the list.";
     }
 }
