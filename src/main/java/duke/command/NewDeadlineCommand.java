@@ -24,6 +24,8 @@ public class NewDeadlineCommand extends NewTimedTaskCommand {
     @Override
     public void execute(DukeContext ctx) throws DukeException {
         super.execute(ctx);
-        ctx.taskList.addTask(new DeadlineTask(argv[0], datetime));
+        String addStr = ctx.taskList.addTask(new DeadlineTask(argv[0], datetime));
+        ctx.storage.writeTaskFile(ctx.taskList.getFileStr());
+        ctx.ui.print(addStr);
     }
 }

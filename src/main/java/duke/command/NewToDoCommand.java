@@ -12,6 +12,8 @@ public class NewToDoCommand extends ArgCommand {
     @Override
     public void execute(DukeContext ctx) throws DukeException {
         super.execute(ctx);
-        ctx.taskList.addTask(new ToDoTask(arg));
+        String addStr = ctx.taskList.addTask(new ToDoTask(arg));
+        ctx.storage.writeTaskFile(ctx.taskList.getFileStr());
+        ctx.ui.print(addStr);
     }
 }
