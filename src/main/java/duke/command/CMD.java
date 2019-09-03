@@ -30,6 +30,11 @@ public enum CMD {
         public Command getCommand() {
             return new NewDeadlineCommand();
         }
+    },
+    FIND("find") {
+        public Command getCommand() {
+            return new FindCommand();
+        }
     };
 
     private final String cmdStr;

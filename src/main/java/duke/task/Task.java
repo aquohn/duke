@@ -30,6 +30,10 @@ abstract class Task {
         return type;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "[" + (isDone ? "\u2713" : "\u2718") + "] " + name; //ternary operator returns tick or X

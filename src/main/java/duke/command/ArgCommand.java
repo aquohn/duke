@@ -8,7 +8,7 @@ public abstract class ArgCommand extends Command {
     String emptyArgMsg;
 
     public void parse(String inputStr) throws DukeException {
-        arg = inputStr;
+        arg = inputStr.strip();
         if (arg.length() == 0) {
             throw new DukeException(emptyArgMsg);
         }

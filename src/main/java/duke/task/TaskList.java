@@ -34,11 +34,11 @@ public class TaskList {
     }
 
     public String getFileStr() {
-        StringBuilder taskFileBuilder = new StringBuilder();
+        StringBuilder fileStrBuilder = new StringBuilder();
         for (int i = 0; i < taskArrList.size(); ++i) {
-            taskFileBuilder.append(taskArrList.get(i).toData()).append(System.lineSeparator());
+            fileStrBuilder.append(taskArrList.get(i).toData()).append(System.lineSeparator());
         }
-        return taskFileBuilder.toString();
+        return fileStrBuilder.toString();
     }
 
     public String markDone(String idxStr) throws DukeException {
@@ -64,5 +64,23 @@ public class TaskList {
             String taskCountStr = taskCount + ((taskCount == 1) ? " task" : " tasks");
             addStr += "Now you have " + taskCountStr + " in the list.";
             return addStr;
+    }
+
+    public String find(String searchTerm) {
+        int i = 1;
+        StringBuilder searchBuilder = new StringBuilder();
+        searchBuilder.append("Here are the matching tasks in your list:");
+        for (Task task : taskArrList) {
+            if (task.getName().contains(searchTerm)) {
+               searchBuilder.append(System.lineSeparator()).append(i + ".").append(task.toString());
+               ++i;
+            }
+        }
+
+        if (i == 1) {
+            return "Can't find any matching tasks!";
+        } else {
+            return searchBuilder.toString();
+        }
     }
 }
