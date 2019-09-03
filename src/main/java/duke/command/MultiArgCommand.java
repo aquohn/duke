@@ -5,10 +5,10 @@ import duke.exception.DukeException;
 // For commands with multiple arguments split by a common delimiter
 
 public abstract class MultiArgCommand extends ArgCommand {
-    protected String[] argv;
-    protected static int argc;
-    protected static String delim;
-    protected static String invalidArgMsg;
+    String[] argv;
+    int argc;
+    String delim;
+    String invalidArgMsg;
 
     public void parse(String inputStr) throws DukeException {
         super.parse(inputStr);

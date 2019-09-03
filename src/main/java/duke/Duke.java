@@ -9,15 +9,18 @@ import duke.command.Ui;
 public class Duke {
     private DukeContext ctx;
 
-    public Duke(String filePath) {
+    private Duke(String filePath) {
+        Ui ui = new Ui(); //UI construction is safe, send welcome first
+        ui.printWelcome();
         try {
-            ctx = new DukeContext(new Storage(filePath), new Ui());
+            ctx = new DukeContext(new Storage(filePath), ui);
         } catch (DukeFatalException excp) {
-            excp.killProgram(new Ui());
+            excp.killProgram(ui);
         }
+        ctx.ui.printHello();
     }
 
-    public void run() {
+    private void run() {
         while (true) {
             try {
                 Command c = ctx.ui.parseCommand();

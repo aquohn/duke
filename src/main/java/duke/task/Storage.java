@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Storage {
 
-   private File taskFile;
+   private final File taskFile;
 
    public Storage(String filePath) throws DukeFatalException {
       taskFile = new File(filePath);
@@ -36,7 +36,7 @@ public class Storage {
 
       try {
          FileWriter taskFileWr = new FileWriter(taskFile);
-         taskFileWr.write(taskFileStr.toString());
+         taskFileWr.write(taskFileStr);
          taskFileWr.close();
       } catch (IOException excp) {
          throw new DukeFatalException("Unable to write data! Some data may have been lost,");

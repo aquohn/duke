@@ -8,7 +8,7 @@ public class NewEventCommand extends NewTimedTaskCommand {
 
     public NewEventCommand() {
         argc = 2;
-        delim = "/by";
+        delim = "/at";
         invalidArgMsg = "Invalid event! I need to know the date and time that it is /at.";
         emptyArgMsg = "You didn't tell me anything about the event!";
     }

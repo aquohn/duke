@@ -1,22 +1,13 @@
 package duke.command;
 
 import duke.exception.DukeException;
-import duke.exception.DukeFatalException;
 import duke.exception.DukeResetException;
-import duke.task.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
-    private static final String KW_AT = "/at";
-    private static final String KW_BY = "/by";
-    private Parser parser;
-    private Scanner scanIn;
+    private final Parser parser;
+    private final Scanner scanIn;
 
     public Ui() {
         parser = new Parser();
@@ -33,6 +24,9 @@ public class Ui {
                 + logoSpace + "| |_| | |_| |   <  __/\n"
                 + logoSpace + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("\n" + titleSpace + "Hello from\n" + logo);
+    }
+
+    public void printHello() {
         print("Hello, I'm Duke!\nWhat can I do for you?");
     }
 
@@ -48,10 +42,10 @@ public class Ui {
 
     public void print(String msg) {
         String line = "    ________________________________________________________________________________";
-        String indentline = "    " + System.lineSeparator();
+        String indentline = System.lineSeparator() + "    ";
         System.out.println(line);
-        msg = msg.replaceAll("(\\r\\n|\\r|\\n)", indentline);
-        System.out.println(msg);
+        msg = msg.replaceAll("(\\r\\n|\\n|\\r)", indentline);
+        System.out.println("    " + msg);
         System.out.println(line + System.lineSeparator());
     }
 

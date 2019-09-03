@@ -1,15 +1,14 @@
 package duke;
 
 import duke.command.Ui;
-import duke.exception.DukeException;
 import duke.exception.DukeFatalException;
 import duke.exception.DukeResetException;
 import duke.task.Storage;
 import duke.task.TaskList;
 
 public class DukeContext {
-    public Storage storage;
-    public Ui ui;
+    public final Storage storage;
+    public final Ui ui;
     public TaskList taskList;
 
     public DukeContext(Storage _storage, Ui _ui) throws DukeFatalException {
