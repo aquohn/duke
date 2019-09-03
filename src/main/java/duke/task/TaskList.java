@@ -20,17 +20,17 @@ public class TaskList {
         taskArrList = new ArrayList<Task>();
     }
 
-    public String[] listTasks() throws DukeException {
+    public String listTasks() throws DukeException {
         int taskCount = taskArrList.size();
         if (taskCount == 0) {
             throw new DukeException("You don't have any tasks yet!");
         }
-        String[] taskArr = new String[taskCount];
+        StringBuilder taskListBuilder = new StringBuilder();
         for (int i = 0; i < taskCount; ++i) {
             Task currTask = taskArrList.get(i);
-            taskArr[i] = (i + 1) + "." + currTask.toString();
+            taskListBuilder.append(i + 1).append(".").append(currTask.toString());
         }
-        return taskArr;
+        return taskListBuilder.toString();
     }
 
     public String getFileStr() {
