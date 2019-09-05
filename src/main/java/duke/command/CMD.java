@@ -54,5 +54,4 @@ public enum CMD {
     }
 
     public abstract Command getCommand();
-
 }

@@ -1,7 +1,6 @@
 package duke.command;
 
 import duke.DukeContext;
-import duke.exception.DukeException;
 
 public class FindCommand extends ArgCommand {
 

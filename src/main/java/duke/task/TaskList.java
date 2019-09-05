@@ -35,8 +35,8 @@ public class TaskList {
 
     public String getFileStr() {
         StringBuilder fileStrBuilder = new StringBuilder();
-        for (int i = 0; i < taskArrList.size(); ++i) {
-            fileStrBuilder.append(taskArrList.get(i).toData()).append(System.lineSeparator());
+        for (Task task : taskArrList) {
+            fileStrBuilder.append(task.toData()).append(System.lineSeparator());
         }
         return fileStrBuilder.toString();
     }
@@ -86,7 +86,7 @@ public class TaskList {
         searchBuilder.append("Here are the tasks that contain '").append(searchTerm).append("':");
         for (Task task : taskArrList) {
             if (task.getName().contains(searchTerm)) {
-               searchBuilder.append(System.lineSeparator()).append(i + ".").append(task.toString());
+               searchBuilder.append(System.lineSeparator()).append(i).append(".").append(task.toString());
                ++i;
             }
         }
