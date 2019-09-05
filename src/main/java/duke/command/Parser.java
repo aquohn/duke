@@ -14,7 +14,6 @@ class Parser {
     * Constructs a new Parser, generating a HashMap from CMD enum values to allow fast lookup of command types
     */
    public Parser() {
-       //
       for (CMD cmd : CMD.values()) {
          commandMap.put(cmd.toString(), cmd);
       }
