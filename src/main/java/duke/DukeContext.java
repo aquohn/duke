@@ -32,7 +32,6 @@ public class DukeContext {
                         break;
                     } else if (resetStr.equalsIgnoreCase("n")) {
                         ui.closeUi();
-                        ui.print("Exiting Duke...");
                         System.exit(0);
                     }
                 }
