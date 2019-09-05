@@ -9,6 +9,11 @@ import duke.command.Ui;
 public class Duke {
     private DukeContext ctx; //holds the tasklist, ui and storage classes
 
+    /**
+     * Creates a new Duke object, with an associated DukeContext.
+     * @see DukeContext
+     * @param filePath The path where the data file will be located.
+     */
     private Duke(String filePath) {
         Ui ui = new Ui(); //UI construction is safe, send welcome first
         ui.printWelcome();
@@ -21,6 +26,9 @@ public class Duke {
         ctx.ui.printHello();
     }
 
+    /**
+     * Continually extracts and executes commands from user input.
+     */
     private void run() {
         while (true) {
             try {

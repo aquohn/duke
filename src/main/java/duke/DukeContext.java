@@ -11,6 +11,15 @@ public class DukeContext {
     public final Ui ui;
     public TaskList taskList;
 
+    /**
+     * Create new DukeContext, generating taskList from the provided Ui and Storage objects.
+     * @param _storage Storage object to use in this context.
+     * @param _ui Ui object to use in this context.
+     * @see Ui
+     * @see TaskList
+     * @see Storage
+     * @throws DukeFatalException If unable to setup data file.
+     */
     public DukeContext(Storage _storage, Ui _ui) throws DukeFatalException {
         storage = _storage;
         ui = _ui;

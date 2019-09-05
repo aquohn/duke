@@ -10,13 +10,23 @@ class Parser {
 
    // NOTE: new instance of Command object is returned each time
 
+   /**
+    * Constructs a new Parser, generating a HashMap from CMD enum values to allow fast lookup of command types
+    */
    public Parser() {
-       // generate a HashMap to allow fast lookup of command types
+       //
       for (CMD cmd : CMD.values()) {
          commandMap.put(cmd.toString(), cmd);
       }
    }
 
+   /**
+    * Creates a new command of the type requested by the user, and extracts the necessary data for the command from
+    * the arguments.
+    * @param inputStr The input to the command line
+    * @return A new instance of the Command object requested
+    * @throws DukeException If there is no matching command or the arguments do not meet the command's requirements.
+    */
    public Command parse(String inputStr) throws DukeException {
       inputStr = inputStr.replace("\t", "    "); //sanitise input
       int firstSpaceIdx = inputStr.indexOf(" "); //index of first space

@@ -12,14 +12,29 @@ public class TaskList {
 
     private ArrayList<Task> taskArrList;
 
+    /**
+     * Creates a new TaskList, loading data from the Storage object provided.
+     * @param storage The Storage object pointing to the TSV file containing the data to load.
+     * @throws DukeResetException If file is corrupted or the data has been edited to be unreadable.
+     * @throws DukeFatalException If unable to write data file.
+     */
     public TaskList(Storage storage) throws DukeResetException, DukeFatalException {
         taskArrList = storage.parseTaskFile();
     }
 
+    /**
+     * Creates a new, empty TaskList.
+     */
     public TaskList() {
         taskArrList = new ArrayList<Task>();
     }
 
+    /**
+     * Concatenates the string description of each task, numbering them from first added to last, and returns this list
+     * as a String.
+     * @return String representation of all tasks, numbered chronologically.
+     * @throws DukeException
+     */
     public String listTasks() throws DukeException {
         int taskCount = taskArrList.size();
         if (taskCount == 0) {
