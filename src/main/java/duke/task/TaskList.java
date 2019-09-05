@@ -28,7 +28,7 @@ public class TaskList {
         StringBuilder taskListBuilder = new StringBuilder();
         for (int i = 0; i < taskCount; ++i) {
             Task currTask = taskArrList.get(i);
-            taskListBuilder.append(i + 1).append(".").append(currTask.toString());
+            taskListBuilder.append(System.lineSeparator()).append(i + 1).append(".").append(currTask.toString());
         }
         return taskListBuilder.toString();
     }

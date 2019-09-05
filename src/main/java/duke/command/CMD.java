@@ -1,5 +1,7 @@
 package duke.command;
 
+// enum for generating hashmap of strings to commands
+
 public enum CMD {
     LIST("list") {
         public Command getCommand() {

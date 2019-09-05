@@ -14,8 +14,7 @@ public abstract class MultiArgCommand extends ArgCommand {
         super.parse(inputStr);
 
         //remove excess whitespace between commands
-        //primarily to prevent space-delimited commands from throwing errors
-        //if there are two spaces
+        //primarily to prevent space-delimited commands from throwing errors if there are two spaces
         argv = arg.split("\\s*" + delim + "\\s*");
         if (argv.length != argc) {
             argv = null;

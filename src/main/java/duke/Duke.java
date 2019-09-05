@@ -7,15 +7,16 @@ import duke.task.Storage;
 import duke.command.Ui;
 
 public class Duke {
-    private DukeContext ctx;
+    private DukeContext ctx; //holds the tasklist, ui and storage classes
 
     private Duke(String filePath) {
         Ui ui = new Ui(); //UI construction is safe, send welcome first
         ui.printWelcome();
         try {
+            //construct tasklist from storage and ui
             ctx = new DukeContext(new Storage(filePath), ui);
         } catch (DukeFatalException excp) {
-            excp.killProgram(ui);
+            excp.killProgram(ui); //standard exit on fatal exception
         }
         ctx.ui.printHello();
     }
