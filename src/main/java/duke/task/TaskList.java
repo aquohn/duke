@@ -30,10 +30,10 @@ public class TaskList {
     }
 
     /**
-     * Concatenates the string description of each task, numbering them from first added to last, and returns this list
-     * as a String.
+     * Concatenates the string representation of each task, numbering them from first added to last, and returns this
+     * list as a String.
      * @return String representation of all tasks, numbered chronologically.
-     * @throws DukeException
+     * @throws DukeException If there are no tasks yet.
      */
     public String listTasks() throws DukeException {
         int taskCount = taskArrList.size();
@@ -48,6 +48,10 @@ public class TaskList {
         return taskListBuilder.toString();
     }
 
+    /**
+     * Concatenates the data representation of each task, for writing to the data file.
+     * @return Concatenated data representations of all tasks.
+     */
     public String getFileStr() {
         StringBuilder fileStrBuilder = new StringBuilder();
         for (Task task : taskArrList) {
@@ -56,28 +60,54 @@ public class TaskList {
         return fileStrBuilder.toString();
     }
 
+    /**
+     * Marks a task as in the list as done.
+     * @param idxStr The argument given by the user to identify the task to be marked done.
+     * @return A success message with the String representation of the newly completed task.
+     * @throws DukeException If idxStr cannot be resolved to a valid task index.
+     */
     public String markDone(String idxStr) throws DukeException {
         Task currTask = taskArrList.get(getTaskIdx(idxStr));
         currTask.markDone();
-        return currTask.toString();
+        return "Nice! I've marked this task as done:" + System.lineSeparator()
+                + "  " + currTask.toString();
     }
 
+    /**
+     * Adds a new task to the list.
+     * @param newTask The task to be added.
+     * @return A success message, with the String representation of the newly added task, and a message
+     * reporting the number of tasks in the list.
+     */
     public String addTask(Task newTask) {
         String addStr = "Got it, I've added this task:" + System.lineSeparator()
                 + "  " + newTask.toString() + System.lineSeparator();
         taskArrList.add(newTask);
         return addStr + getTaskCountStr();
     }
-
+    /**
+     * Deletes a task from the list.
+     * @param idxStr The argument given by the user to identify the task to be deleted.
+     * @return A success message with the String representation of the newly deleted task, and a message reporting the
+     * number of tasks in the list.
+     * @throws DukeException If idxStr cannot be resolved to a valid task index.
+     */
     public String deleteTask(String idxStr) throws DukeException {
         int idx = getTaskIdx(idxStr);
-        String delString = taskArrList.get(idx).toString();
+        String delString = "Noted. I've removed this task:" + System.lineSeparator()
+                + "  " + taskArrList.get(idx).toString();
         taskArrList.remove(idx);
         return delString + System.lineSeparator() + getTaskCountStr();
     }
 
+    /**
+     * Parses a String to extract an integer, and checks if this integer is a valid index for the list
+     * @param idxStr A String representing an integer, without leading/trailing spaces
+     * @return An integer that is a valid index for an entry on the list
+     * @throws DukeException If idxStr cannot be parsed, or the integer is not a valid index
+     */
     private int getTaskIdx(String idxStr) throws DukeException {
-        if (idxStr.matches("\\d+")) { //if second arg is an integer
+        if (idxStr.matches("^\\d+$")) { //if second arg is an integer
             int idx = Integer.parseInt(idxStr) - 1;
             if (idx < taskArrList.size()) {
                 return idx;
@@ -89,12 +119,21 @@ public class TaskList {
         }
     }
 
+    /**
+     * Reports the number of tasks currently in the list.
+     * @return A String reporting the current number of tasks.
+     */
    private String getTaskCountStr() {
         int taskCount = taskArrList.size();
         String taskCountStr = taskCount + ((taskCount == 1) ? " task" : " tasks");
         return "Now you have " + taskCountStr + " in the list.";
     }
 
+    /**
+     * Concatenates the descriptions of all tasks whose names contain the searchTerm.
+     * @param searchTerm String to search through the tasks for.
+     * @return Concatenated descriptions of matching tasks.
+     */
     public String find(String searchTerm) {
         int i = 1;
         StringBuilder searchBuilder = new StringBuilder();

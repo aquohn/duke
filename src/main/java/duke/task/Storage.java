@@ -17,6 +17,11 @@ public class Storage {
 
    private final File taskFile;
 
+   /**
+    * Constructs a new Storage object, with the task file at the specified path.
+    * @param filePath Path at which to look for or create the data file.
+    * @throws DukeFatalException If data file cannot be setup.
+    */
    public Storage(String filePath) throws DukeFatalException {
       taskFile = new File(filePath);
       if (!taskFile.exists()) {
@@ -30,6 +35,11 @@ public class Storage {
       }
    }
 
+   /**
+    * Writes data to the task file.
+    * @param taskFileStr String to write to task file.
+    * @throws DukeFatalException If unable to write to the task file.
+    */
    public void writeTaskFile(String taskFileStr) throws DukeFatalException {
       // TODO: figure out some way of editing that doesn't involve rewriting everything each time
       // Maybe some kind of diff file?
@@ -43,6 +53,12 @@ public class Storage {
       }
    }
 
+   /**
+    * Parses a task file into an ArrayList of tasks.
+    * @return An ArrayList of the tasks extracted from the task file.
+    * @throws DukeResetException If any corruption or improperly formatted entries are encountered.
+    * @throws DukeFatalException If file cannot be found.
+    */
    public ArrayList<Task> parseTaskFile() throws DukeResetException, DukeFatalException {
       ArrayList<Task> taskArrList = new ArrayList<Task>();
       if (taskFile.length() == 0) { // file is empty

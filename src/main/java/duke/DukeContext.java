@@ -35,7 +35,7 @@ public class DukeContext {
                 if (resetStr.length() > 0) {
                     resetStr = resetStr.substring(0, 1); //extract first char
                     if (resetStr.equalsIgnoreCase("y")) {
-                        storage.writeTaskFile("");
+                        storage.writeTaskFile(""); //write empty string to data file
                         taskList = new TaskList();
                         ui.print("Your data has been reset!");
                         break;
