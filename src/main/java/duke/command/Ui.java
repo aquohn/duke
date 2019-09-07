@@ -25,12 +25,12 @@ public class Ui {
         //print welcome message
         String logoSpace = "                                  ";
         String titleSpace = "                                        ";
-        String logo = logoSpace + " ____        _        \n"
-                + logoSpace + "|  _ \\ _   _| | _____ \n"
-                + logoSpace + "| | | | | | | |/ / _ \\\n"
-                + logoSpace + "| |_| | |_| |   <  __/\n"
-                + logoSpace + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("\n" + titleSpace + "Hello from\n" + logo);
+        String logo = logoSpace + " ____        _        " + System.lineSeparator()
+                + logoSpace + "|  _ \\ _   _| | _____ " + System.lineSeparator()
+                + logoSpace + "| | | | | | | |/ / _ \\" + System.lineSeparator()
+                + logoSpace + "| |_| | |_| |   <  __/" + System.lineSeparator()
+                + logoSpace + "|____/ \\__,_|_|\\_\\___|" + System.lineSeparator();
+        System.out.println(System.lineSeparator() + titleSpace + "Hello from" + System.lineSeparator() + logo);
     }
 
 
