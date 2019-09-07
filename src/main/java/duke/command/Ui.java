@@ -22,7 +22,6 @@ public class Ui {
      * Prints logo and welcome message.
      */
     public void printWelcome() {
-        //print welcome message
         String logoSpace = "                                  ";
         String titleSpace = "                                        ";
         String logo = logoSpace + " ____        _        " + System.lineSeparator()
@@ -32,7 +31,6 @@ public class Ui {
                 + logoSpace + "|____/ \\__,_|_|\\_\\___|" + System.lineSeparator();
         System.out.println(System.lineSeparator() + titleSpace + "Hello from" + System.lineSeparator() + logo);
     }
-
 
     /**
      * Prints hello message to indicate that setup is completed and Duke can receive user input.
