@@ -15,7 +15,7 @@ public class Duke {
      * @param filePath The path where the data file will be located.
      */
     private Duke(String filePath) {
-        Ui ui = new Ui(); //UI construction is safe, send welcome first
+        Ui ui = new Ui(System.in, System.out); //UI construction is safe, send welcome first
         ui.printWelcome();
         try {
             //construct tasklist from storage and ui

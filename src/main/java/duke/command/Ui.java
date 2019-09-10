@@ -3,19 +3,24 @@ package duke.command;
 import duke.exception.DukeException;
 import duke.exception.DukeResetException;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Ui {
     private final Parser parser;
     private final Scanner scanIn;
+    private final PrintStream stdout;
 
     /**
-     * Constructs a new Ui object, with a new Parser and Scanner for System.in
+     * Constructs a new Ui object, with a new Parser, constructs a Scanner for the input stream, and specifies output
+     * stream
      * @see Parser
      */
-    public Ui() {
+    public Ui(InputStream _stdin, PrintStream _stdout) {
         parser = new Parser();
-        scanIn = new Scanner(System.in);
+        stdout = _stdout;
+        scanIn = new Scanner(_stdin);
     }
 
     /**
@@ -29,7 +34,7 @@ public class Ui {
                 + logoSpace + "| | | | | | | |/ / _ \\" + System.lineSeparator()
                 + logoSpace + "| |_| | |_| |   <  __/" + System.lineSeparator()
                 + logoSpace + "|____/ \\__,_|_|\\_\\___|" + System.lineSeparator();
-        System.out.println(System.lineSeparator() + titleSpace + "Hello from" + System.lineSeparator() + logo);
+        stdout.println(System.lineSeparator() + titleSpace + "Hello from" + System.lineSeparator() + logo);
     }
 
     /**
@@ -68,15 +73,14 @@ public class Ui {
     public void print(String msg) {
         String line = "    ________________________________________________________________________________";
         String indentline = System.lineSeparator() + "    ";
-        System.out.println(line);
+        stdout.println(line);
         msg = msg.replaceAll("(\\r\\n|\\n|\\r)", indentline);
-        System.out.println("    " + msg);
-        System.out.println(line + System.lineSeparator());
+        stdout.println("    " + msg);
+        stdout.println(line + System.lineSeparator());
     }
 
-    //Ui should not be used any more after this
     /**
-     * Closes the scanner and print a goodbye message.
+     * Closes the scanner and print a goodbye message. Ui should not be used any more after calling this function.
      */
     public void closeUi() {
         scanIn.close();
