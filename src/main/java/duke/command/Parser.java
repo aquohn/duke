@@ -8,8 +8,6 @@ public class Parser {
 
    private final HashMap<String, CMD> commandMap = new HashMap<String, CMD>();
 
-   // NOTE: new instance of Command object is returned each time
-
    /**
     * Constructs a new Parser, generating a HashMap from CMD enum values to allow fast lookup of command types
     */
@@ -20,7 +18,7 @@ public class Parser {
    }
 
    /**
-    * Creates a new command of the type requested by the user, and extracts the necessary data for the command from
+    * Creates a new Command of the type requested by the user, and extracts the necessary data for the command from
     * the arguments.
     * @param inputStr The input to the command line
     * @return A new instance of the Command object requested
@@ -35,10 +33,9 @@ public class Parser {
          throw new DukeException("I'm sorry, but I don't know what that means!");
       }
       Command command = cmd.getCommand();
-      //trim command and first space after it from input if needed
       // TODO: if possible, disambiguate using functions
-      if (command instanceof ArgCommand) {
-         // stripping not required otherwise
+      // trim command and first space after it from input if needed
+      if (command instanceof ArgCommand) { // stripping not required otherwise
          inputStr = inputStr.substring(cmdStr.length()).strip();
       }
       command.parse(inputStr);
