@@ -4,6 +4,10 @@ package duke.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Maintains the associations between task type characters and tasks (e.g. "T" -> ToDoTask). For use in parsing data
+ * files.
+ */
 public enum TSK {
     TODO("T") {
        public Task getTask(String[] taskArr) throws IndexOutOfBoundsException {
@@ -25,6 +29,10 @@ public enum TSK {
 
     private final String taskChar;
 
+    /**
+     * Creates the TSK enum instance and associates the specified character with it.
+     * @param _taskChar The character to be associated with the specified task type.
+     */
     TSK (final String _taskChar) {
         taskChar = _taskChar;
     }
@@ -34,5 +42,11 @@ public enum TSK {
         return taskChar;
     }
 
+    /**
+     * Creates and sets up a new task from an array containing the data it is to have. The parameters for the task
+     * constructor are extracted by this method.
+     * @param taskArr An array containing the data for the task, format specific to each task type.
+     * @return A task loaded with the data from taskArr.
+     */
     public abstract Task getTask(String[] taskArr);
 }

@@ -4,7 +4,7 @@ import duke.exception.DukeException;
 
 import java.util.HashMap;
 
-class Parser {
+public class Parser {
 
    private final HashMap<String, CMD> commandMap = new HashMap<String, CMD>();
 

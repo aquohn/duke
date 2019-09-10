@@ -2,6 +2,10 @@ package duke.command;
 
 // enum for generating hashmap of strings to commands
 
+/**
+ * Maintains the associations between command keywords and commands (e.g. "list" -> ListCommand). For use in parsing
+ * user input.
+ */
 public enum CMD {
     LIST("list") {
         public Command getCommand() {
@@ -46,6 +50,10 @@ public enum CMD {
 
     private final String cmdStr;
 
+    /**
+     * Creates the CMD enum instance and associates the specified keyword with it.
+     * @param _cmdStr The keyword to be associated with the specified task type.
+     */
     CMD (final String _cmdStr) {
         cmdStr = _cmdStr;
     }
@@ -55,5 +63,10 @@ public enum CMD {
         return cmdStr;
     }
 
+    /**
+     * Creates an empty (all parameters null) new Command of the specified type, to be loaded with data using its
+     * parse method.
+     * @return A new Command of the specified type.
+     */
     public abstract Command getCommand();
 }
