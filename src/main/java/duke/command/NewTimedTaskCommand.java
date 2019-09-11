@@ -29,8 +29,7 @@ public abstract class NewTimedTaskCommand extends MultiArgCommand {
 
         try {
             datetime = LocalDateTime.parse(argv[1], TimedTask.getDataFormatter());
-        } catch (
-                DateTimeParseException excp) {
+        } catch (DateTimeParseException excp) {
             throw new DukeException("Date and time must be given as e.g. "
                     + LocalDateTime.now().format(TimedTask.getDataFormatter()) + ".");
         }

@@ -101,6 +101,29 @@ public class TaskList {
     }
 
     /**
+     * Concatenates the descriptions of all tasks whose names contain the searchTerm.
+     * @param searchTerm String to search through the tasks for.
+     * @return Concatenated descriptions of matching tasks.
+     */
+    public String find(String searchTerm) {
+        int i = 1;
+        StringBuilder searchBuilder = new StringBuilder();
+        searchBuilder.append("Here are the tasks that contain '").append(searchTerm).append("':");
+        for (Task task : taskArrList) {
+            if (task.getName().contains(searchTerm)) {
+                searchBuilder.append(System.lineSeparator()).append(i).append(".").append(task.toString());
+                ++i;
+            }
+        }
+
+        if (i == 1) {
+            return "Can't find any matching tasks!";
+        } else {
+            return searchBuilder.toString();
+        }
+    }
+
+    /**
      * Parses a String to extract an integer, and checks if this integer is a valid index for the list
      * @param idxStr A String representing an integer, without leading/trailing spaces
      * @return An integer that is a valid index for an entry on the list
@@ -129,26 +152,4 @@ public class TaskList {
         return "Now you have " + taskCountStr + " in the list.";
     }
 
-    /**
-     * Concatenates the descriptions of all tasks whose names contain the searchTerm.
-     * @param searchTerm String to search through the tasks for.
-     * @return Concatenated descriptions of matching tasks.
-     */
-    public String find(String searchTerm) {
-        int i = 1;
-        StringBuilder searchBuilder = new StringBuilder();
-        searchBuilder.append("Here are the tasks that contain '").append(searchTerm).append("':");
-        for (Task task : taskArrList) {
-            if (task.getName().contains(searchTerm)) {
-               searchBuilder.append(System.lineSeparator()).append(i).append(".").append(task.toString());
-               ++i;
-            }
-        }
-
-        if (i == 1) {
-            return "Can't find any matching tasks!";
-        } else {
-            return searchBuilder.toString();
-        }
-    }
 }
